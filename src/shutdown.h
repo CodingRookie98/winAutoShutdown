@@ -14,14 +14,9 @@ public:
     ~shutdown();
 
 protected:
-    // 重写窗口大小变化事件
-    virtual void resizeEvent(QResizeEvent* event);
+
 private:
     Ui::shutdown* ui;
-
-    int button_height; // 按钮高度
-    int bottomMargin;// 底部按钮距离底部距离
-    int leftMargin;// 底部按钮左边距
 
     void onButtonConfirmClicked(); // 执行定时关机命令
     void interfaceInitialization(); // 界面初始化

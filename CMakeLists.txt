@@ -14,8 +14,12 @@ aux_source_directory(./src srcs)
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
+# set(QRC_FILE ./src/img.qrc)
+# qt6_add_resources(QRC $(QRC_FILE))
+
 add_executable(${PROJECT_NAME}
     WIN32 # If you need a terminal for debug, please comment this statement
     ${srcs}
+    # ${QRC}
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets) # Qt5 Shared Library
