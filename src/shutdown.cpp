@@ -2,7 +2,6 @@
 #include "shutdown.h"
 #include <QDebug>
 #include <QProcess>
-#include <QPropertyAnimation>
 #include <QFont>
 
 QString timeUnitSecond = "秒/s";
