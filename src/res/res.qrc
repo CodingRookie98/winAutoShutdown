@@ -2,4 +2,7 @@
     <qresource prefix="/img">
         <file>image/main_icon.png</file>
     </qresource>
+    <qresource prefix="/markdown">
+        <file>About.md</file>
+    </qresource>
 </RCC>

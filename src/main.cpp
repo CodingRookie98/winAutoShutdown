@@ -1,10 +1,10 @@
 #include <QApplication>
-#include "shutdown.h"
+#include "./ui/mainWindow.h"
 #pragma comment(lib, "user32.lib")
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
-    shutdown sdWidow;
-    sdWidow.show();
+    MainWindow mainWindow;
+    mainWindow.show();
     return a.exec();
 }
