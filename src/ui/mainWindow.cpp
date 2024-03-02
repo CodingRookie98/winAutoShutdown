@@ -33,7 +33,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::init() {
-    this->setWindowTitle(QApplication::translate(metaObject()->className(), tr("Windows Auto Shutdown By CodingRookie").toStdString().c_str()));
+    this->setWindowTitle(tr("Windows Auto Shutdown By CodingRookie"));
     trayIcon_->setContextMenu(menuTrayIcon);
     trayIcon_->show();
 }
