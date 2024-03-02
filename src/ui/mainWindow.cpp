@@ -33,6 +33,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::init() {
+    this->setWindowTitle(tr("Windows Auto Shutdown By CodingRookie"));
     trayIcon_->setContextMenu(menuTrayIcon);
     trayIcon_->show();
 }
@@ -82,15 +83,4 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         QApplication::exit(0);
     });
     messageBox.exec();
-}
-
-void MainWindow::changeEvent(QEvent *event) {
-    //    if (event->type() == QEvent::WindowStateChange) {
-    //        if (isMinimized()) {
-    //            // 窗口最小化时，将窗口隐藏到系统托盘
-    //            hide();
-    //            event->ignore();
-    //        }
-    //    }
-    //    QMainWindow::changeEvent(event);
 }
