@@ -69,18 +69,7 @@ void MainWindow::signalsProcess() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    QMessageBox messageBox(this);
-    messageBox.setText("是否最小化到系统托盘");
-    auto btnYes = messageBox.addButton("是", QMessageBox::ButtonRole::YesRole);
-    auto btnNo  = messageBox.addButton("否", QMessageBox::ButtonRole::NoRole);
-    messageBox.setModal(true);
-    connect(btnYes, &QAbstractButton::clicked, [&] {
-        // 重写关闭事件，将窗口最小化到系统托盘
-        this->hide();
-        event->ignore();
-    });
-    connect(btnNo, &QAbstractButton::clicked, [&] {
-        QApplication::exit(0);
-    });
-    messageBox.exec();
+    // 重写关闭事件，将窗口最小化到系统托盘
+    this->hide();
+    event->ignore();
 }
