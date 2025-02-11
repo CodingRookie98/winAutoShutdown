@@ -16,7 +16,7 @@
 AboutDialog::AboutDialog(QWidget *parent) :
     QDialog(parent), ui(new Ui::AboutDialog) {
     ui->setupUi(this);
-    
+
     init();
     signalsProcess();
 }
@@ -24,9 +24,18 @@ AboutDialog::AboutDialog(QWidget *parent) :
 AboutDialog::~AboutDialog() {
     delete ui;
 }
+
+bool AboutDialog::event(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    return QDialog::event(event);
+}
+
 void AboutDialog::signalsProcess() {
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &QDialog::close);
 }
+
 void AboutDialog::init() {
     ui->textBrowser->setSource(QUrl("qrc:/markdown/About.md"), QTextDocument::HtmlResource);
 }

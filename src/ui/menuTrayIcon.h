@@ -18,6 +18,9 @@ class MenuTrayIcon : public QMenu {
 public:
     MenuTrayIcon();
     ~MenuTrayIcon() override;
+
+protected:
+    bool event(QEvent *event) override;
     
 signals:
     void sigExit();

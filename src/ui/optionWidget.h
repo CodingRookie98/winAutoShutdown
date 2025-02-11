@@ -13,15 +13,19 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
-#include <map>
-#include <chrono>
 #include <QItemSelectionModel>
-#include <QDialog>
-#include "../components/operationShutdown.h"
-#include "../components/operationReboot.h"
-#include "../components/operationLogOff.h"
-#include "../components/worker.h"
-#include "../components/workOneShot.h"
+
+namespace work {
+class Work;
+class Worker;
+} // namespace work
+namespace operation {
+class OperationBase;
+class PowerAction;
+namespace type {
+enum class PowerActions;
+}
+} // namespace operation
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,31 +39,36 @@ class OptionWidget : public QWidget {
 public:
     explicit OptionWidget(QWidget *parent = nullptr);
     ~OptionWidget() override;
-    
+
+protected:
+    bool event(QEvent *event) override;
+
 private:
     enum TimeType {
         Timing,
         Countdown
     };
-    
+
     enum TimeUnitType {
         Seconds,
         Minutes,
         Hours,
         Days
     };
+
     Ui::OptionWidget *ui;
-    std::map<std::string, std::shared_ptr<Operation::OperationBase>> operationMap;
-    QStandardItemModel *model;
+    QStandardItemModel *model_;
     QItemSelectionModel *selectionModel_;
-    std::vector<QList<QStandardItem*>> rows;
-    Work::Worker worker_;
-    std::vector<std::shared_ptr<Work::WorkBase>> vecWorks;
-    
+    std::vector<QList<QStandardItem *>> rows_;
+    std::unique_ptr<work::Worker> worker_;
+    std::vector<std::shared_ptr<work::Work>> works_;
+    std::unordered_map<operation::type::PowerActions, std::shared_ptr<operation::OperationBase>> operations_;
+
     void init();
     void signalsProcess();
     void on_btnAddTask_clicked();
     void on_btnDeleteTask_clicked();
+    std::shared_ptr<operation::OperationBase> GetOperation(const operation::type::PowerActions &power_action_type);
 };
 
 #endif // WINAUTOSHUTDOWN_SRC_OPTIONWIDGET_H_

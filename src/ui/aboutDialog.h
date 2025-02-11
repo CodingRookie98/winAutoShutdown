@@ -27,6 +27,9 @@ public:
     explicit AboutDialog(QWidget *parent = nullptr);
     ~AboutDialog() override;
 
+protected:
+    bool event(QEvent *event) override;
+
 private:
     Ui::AboutDialog *ui;
     

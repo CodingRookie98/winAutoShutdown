@@ -12,9 +12,9 @@
 #define WINAUTOSHUTDOWN_SRC_MAINWINDOW_H_
 
 #include <QMainWindow>
-#include <QMenu>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
+#include <QSettings>
 #include "optionWidget.h"
 #include "menuTrayIcon.h"
 
@@ -24,6 +24,11 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+enum class Language {
+    en_US,
+    zh_CN,
+};
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -32,18 +37,22 @@ public:
     ~MainWindow() override;
 
     void init();
-    
+
 protected:
     void closeEvent(QCloseEvent *event) override;
+    bool event(QEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
     OptionWidget *optionWidget_;
     QSystemTrayIcon *trayIcon_;
-    MenuTrayIcon *menuTrayIcon;
+    MenuTrayIcon *menuTrayIcon_;
+    QTranslator *translator_;
+    QSettings *settings_;
 
-        void
-        signalsProcess();
+    void signalsProcess();
+    static void RestartApp();
+    void ChangeLanguage(const Language &language);
 };
 
 #endif // WINAUTOSHUTDOWN_SRC_MAINWINDOW_H_

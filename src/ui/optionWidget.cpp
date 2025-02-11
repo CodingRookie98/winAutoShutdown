@@ -10,59 +10,68 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_OptionWidget.h" resolved
 
-#include <QMessageBox>
-#include <QDateTime>
-#include <QTimeZone>
-#include <iostream>
-#include <iomanip>
 #include "optionWidget.h"
 #include "ui_OptionWidget.h"
+#include <chrono>
+#include <QMessageBox>
+#include <QDialog>
+
+#include "worker.h"
+#include "work.h"
+#include "power_action.h"
 
 OptionWidget::OptionWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::OptionWidget) {
     ui->setupUi(this);
-    model           = new QStandardItemModel();
-    selectionModel_ = new QItemSelectionModel(model);
+    model_          = new QStandardItemModel();
+    selectionModel_ = new QItemSelectionModel(model_);
+    worker_         = std::make_unique<work::Worker>();
 
     init();
     signalsProcess();
-    worker_.startWorking();
+    worker_->StartWork();
 }
 
 OptionWidget::~OptionWidget() {
     delete ui;
-    for (auto &list : rows) {
+    for (auto &list : rows_) {
         for (auto &item : list) {
             delete item;
         }
     }
     delete selectionModel_;
-    delete model;
+    delete model_;
+}
+
+bool OptionWidget::event(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+
+    return QWidget::event(event);
 }
 
 void OptionWidget::init() {
-    ui->operationTypes->addItem("关机");
-    ui->operationTypes->addItem("重启");
-    ui->operationTypes->addItem("注销");
+    ui->operationTypes->addItem(tr("锁定"), QVariant::fromValue(operation::type::PowerActions::Lock));
+    ui->operationTypes->addItem(tr("睡眠"), QVariant::fromValue(operation::type::PowerActions::Sleep));
+    ui->operationTypes->addItem(tr("休眠"), QVariant::fromValue(operation::type::PowerActions::Hibernate));
+    ui->operationTypes->addItem(tr("关机"), QVariant::fromValue(operation::type::PowerActions::Shutdown));
+    ui->operationTypes->addItem(tr("重启"), QVariant::fromValue(operation::type::PowerActions::Restart));
 
-    operationMap["关机"] = std::make_shared<Operation::OperationShutdown>(Operation::OperationShutdown());
-    operationMap["重启"] = std::make_shared<Operation::OperationReboot>(Operation::OperationReboot());
-    operationMap["注销"] = std::make_shared<Operation::OperationLogOff>(Operation::OperationLogOff());
+    ui->timeTypes->addItem(tr("定时"), QVariant(TimeType::Timing));
+    ui->timeTypes->addItem(tr("倒计时"), QVariant(TimeType::Countdown));
 
-    ui->timeTypes->addItem("定时", QVariant(TimeType::Timing));
-    ui->timeTypes->addItem("倒计时", QVariant(TimeType::Countdown));
-
-    ui->countdownTimeUnitTypes->addItem("s/秒", QVariant(TimeUnitType::Seconds));
-    ui->countdownTimeUnitTypes->addItem("m/分", QVariant(TimeUnitType::Minutes));
-    ui->countdownTimeUnitTypes->addItem("h/时", QVariant(TimeUnitType::Hours));
-    ui->countdownTimeUnitTypes->addItem("d/天", QVariant(TimeUnitType::Days));
+    ui->countdownTimeUnitTypes->addItem(tr("s/秒"), QVariant(TimeUnitType::Seconds));
+    ui->countdownTimeUnitTypes->addItem(tr("m/分"), QVariant(TimeUnitType::Minutes));
+    ui->countdownTimeUnitTypes->addItem(tr("h/时"), QVariant(TimeUnitType::Hours));
+    ui->countdownTimeUnitTypes->addItem(tr("d/天"), QVariant(TimeUnitType::Days));
 
     ui->dateTimeEdit->setDateTime(QDateTime::currentDateTime());
     ui->countdownTimeUnitTypes->setEnabled(false);
     ui->countdownTime->setEnabled(false);
 
-    model->setHorizontalHeaderLabels(QStringList({"任务类型", "时间类型", "执行时间"}));
-    ui->planTableView->setModel(model);
+    model_->setHorizontalHeaderLabels(QStringList({tr("任务类型"), tr("时间类型"), tr("执行时间")}));
+    ui->planTableView->setModel(model_);
     ui->planTableView->setSelectionModel(selectionModel_);
 }
 
@@ -79,6 +88,7 @@ void OptionWidget::signalsProcess() {
             ui->countdownTimeUnitTypes->setEnabled(true);
             ui->countdownTime->setEnabled(true);
             break;
+        default: break; ;
         }
     });
 
@@ -119,52 +129,63 @@ void OptionWidget::on_btnAddTask_clicked() {
     }
     rowItems.emplace_back(item);
 
-    for (auto &i : rowItems) {
+    for (const auto &i : rowItems) {
         i->setTextAlignment(Qt::AlignCenter);
         i->setEditable(false);
     }
 
-    model->appendRow(rowItems);
-    rows.emplace_back(rowItems);
+    model_->appendRow(rowItems);
+    rows_.emplace_back(rowItems);
 
-//    auto getUTCTimeOffset = []() -> int {
-//        // 获取系统时间
-//        time_t _rt = time(nullptr);
-//        // 系统时间转换为GMT时间
-//        tm _gtm = *gmtime(&_rt);
-//        // 再将GMT时间重新转换为系统时间
-//        time_t _gt = mktime(&_gtm);
-//        // 这时的_gt已经与实际的系统时间_rt有时区偏移了,计算两个值的之差就是时区偏的秒数,除60就是分钟
-//        int offset = _rt - _gt;
-//        return offset;
-//    };
-    auto operationBase                              = operationMap[ui->operationTypes->currentText().toStdString()];
-    std::chrono::system_clock::time_point startTime = std::chrono::system_clock::from_time_t(dateTime.toSecsSinceEpoch());
-//    startTime += std::chrono::seconds(getUTCTimeOffset());
-    Work::WorkOneShot workOneShot(operationBase, startTime);
-    
-//    auto time_t = std::chrono::system_clock::to_time_t(startTime);
-//    // 使用 std::put_time 格式化时间
-//    std::stringstream ss;
-//    ss << std::put_time(std::localtime(&time_t), "%Y-%m-%d %H:%M:%S");
-//    std::string str = ss.str();
-//    ui->labelDebug->setText(str.c_str());
-    
-    std::shared_ptr<Work::WorkBase> work = std::make_shared<Work::WorkOneShot>(workOneShot);
-    vecWorks.emplace_back(work);
-    worker_.addWork(work);
+    std::shared_ptr<operation::OperationBase> operation_base = GetOperation(ui->operationTypes->currentData().value<operation::type::PowerActions>());
+    std::chrono::system_clock::time_point start_time         = std::chrono::system_clock::from_time_t(dateTime.toSecsSinceEpoch());
+
+    auto work = std::make_shared<work::Work>(std::list{operation_base});
+    works_.emplace_back(work);
+    worker_->AddWork(work, start_time);
 }
 
 void OptionWidget::on_btnDeleteTask_clicked() {
     if (selectionModel_->hasSelection()) {
-        auto index = selectionModel_->currentIndex();
-        model->removeRow(index.row());
-        vecWorks.at(index.row())->stopWork();
-        vecWorks.erase(vecWorks.begin() + index.row());
+        const auto index = selectionModel_->currentIndex();
+        model_->removeRow(index.row());
+        works_.at(index.row())->StopOperate();
+        works_.erase(works_.begin() + index.row());
     } else {
         QMessageBox messageBox(this);
         messageBox.setModal(true);
-        messageBox.setText("请选择一个任务");
+        messageBox.setText(tr("请选择一个任务"));
         messageBox.exec();
     }
+}
+
+std::shared_ptr<operation::OperationBase> OptionWidget::GetOperation(const operation::type::PowerActions &power_action_type) {
+    if (operations_.contains(power_action_type)) {
+        return operations_[power_action_type];
+    }
+    using namespace operation;
+    std::shared_ptr<operation::OperationBase> operation_base = nullptr;
+    switch (power_action_type) {
+    case operation::type::PowerActions::Lock:
+        operation_base = std::make_shared<PowerAction>(type::PowerActions::Lock);
+        break;
+    case operation::type::PowerActions::Sleep:
+        operation_base = std::make_shared<PowerAction>(type::PowerActions::Sleep);
+        break;
+    case operation::type::PowerActions::Hibernate:
+        operation_base = std::make_shared<PowerAction>(type::PowerActions::Hibernate);
+        break;
+    case operation::type::PowerActions::Shutdown:
+        operation_base = std::make_shared<PowerAction>(type::PowerActions::Shutdown);
+        break;
+    case operation::type::PowerActions::Restart:
+        operation_base = std::make_shared<PowerAction>(type::PowerActions::Restart);
+        break;
+    default:
+        operation_base = nullptr;
+    }
+    if (operation_base) {
+        operations_[power_action_type] = operation_base;
+    }
+    return operation_base;
 }
