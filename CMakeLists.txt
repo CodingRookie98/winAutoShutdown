@@ -28,6 +28,7 @@ else ()
 endif ()
 
 add_subdirectory(src)
+add_subdirectory(translations)
 
 target_link_libraries(winAutoShutdown PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
