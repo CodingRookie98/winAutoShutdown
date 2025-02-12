@@ -4,4 +4,4 @@
 
 **The current version is only tested on Windows 11 and 10.**
 
-![](./README.assets/demo.png)
+![](./README.assets/app.png)

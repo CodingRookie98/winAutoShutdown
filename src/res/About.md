@@ -5,7 +5,7 @@
 <div style="text-align:center">
     <p>
         <a>WindAutoShutdown</a><br>
-        <a>Version 1.0.2</a>
+        <a>Version 1.1.0</a>
     </p>
     <p>
         By <a href="https://github.com/CodingRookie98">CodingRookie</a>

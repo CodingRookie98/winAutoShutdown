@@ -114,7 +114,7 @@ void MainWindow::ChangeLanguage(const Language &language) {
     message_box.setDefaultButton(QMessageBox::StandardButtons::enum_type::Yes);
     message_box.setModal(true);
     connect(&message_box, &QMessageBox::buttonClicked, [&](QAbstractButton *button) {
-        QMessageBox::StandardButton standard_button = message_box.standardButton(button);
+        const QMessageBox::StandardButton standard_button = message_box.standardButton(button);
         if (standard_button == QMessageBox::StandardButton::Yes) {
             switch (language) {
             case Language::zh_CN:

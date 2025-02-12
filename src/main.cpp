@@ -3,7 +3,6 @@
 #include <QMessageBox>
 #include <QSettings>
 #include "./ui/mainWindow.h"
-// #pragma comment(lib, "user32.lib")
 
 QString GetLanguageFileName() {
     const QSettings settings("settings.ini", QSettings::IniFormat);
