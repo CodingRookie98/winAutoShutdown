@@ -15,13 +15,13 @@
 ## 阶段 2: 核心业务逻辑迁移 (Core Logic - Rust)
 **目标**: 使用 TDD (Red-Green-Refactor) 在 Rust 端重写电源管理和任务调度逻辑。
 **成功标准**:
-- [ ] **TDD 环境配置**:
-    - [ ] 确保 `cargo test` 可运行。
-    - [ ] 引入 `mockall` 用于模拟系统调用。
-- [ ] **Domain Core (TDD)**:
-    - [ ] **Red**: 创建 `task_spec.rs`，测试 `Task` 实体创建、校验（如时间不能为过去）及序列化。
-    - [ ] **Green**: 定义 `Task` 结构体及 `PowerAction` 枚举。
-    - [ ] **Refactor**: 确保字段类型合适（如使用 `chrono` 处理时间），实现 `Serialize`/`Deserialize`。
+- [x] **TDD 环境配置**:
+    - [x] 确保 `cargo test` 可运行。
+    - [x] 引入 `mockall` 用于模拟系统调用。
+- [x] **Domain Core (TDD)**:
+    - [x] **Red**: 创建 `task_spec.rs`，测试 `Task` 实体创建、校验（如时间不能为过去）及序列化。
+    - [x] **Green**: 定义 `Task` 结构体及 `PowerAction` 枚举。
+    - [x] **Refactor**: 确保字段类型合适（如使用 `chrono` 处理时间），实现 `Serialize`/`Deserialize`。
 - [ ] **PowerManager 模块 (TDD)**:
     - [ ] **Red**: 创建 `power_manager_spec.rs`，定义 `shutdown`, `reboot` 等接口，断言其调用了底层系统命令（通过 Mock）。
     - [ ] **Green**: 实现 `PowerManager` trait 及 Windows 具体实现（使用 `std::process::Command` 或 WinAPI）。
