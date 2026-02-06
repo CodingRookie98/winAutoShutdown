@@ -11,7 +11,30 @@ vi.mock('@tauri-apps/api/core', () => ({
 }))
 
 describe('App.vue', () => {
-  it('renders TaskForm and TaskList', () => {
+  it('renders TaskForm and TaskList', async () => {
+    // Mock localStorage and matchMedia
+    const localStorageMock = {
+        getItem: vi.fn(() => null),
+        setItem: vi.fn(),
+        clear: vi.fn(),
+        removeItem: vi.fn(),
+        key: vi.fn(),
+        length: 0
+    };
+    
+    vi.stubGlobal('localStorage', localStorageMock);
+    
+    vi.stubGlobal('matchMedia', vi.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(), // deprecated
+        removeListener: vi.fn(), // deprecated
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+    })));
+
     const wrapper = mount(App, {
       global: {
         plugins: [createTestingPinia({

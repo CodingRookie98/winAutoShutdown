@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import TaskForm from "./components/TaskForm.vue";
 import TaskList from "./components/TaskList.vue";
-import { onMounted } from "vue";
+import AboutModal from "./components/AboutModal.vue";
+import { onMounted, ref } from "vue";
+import { useTheme } from "./composables/useTheme";
+
+const { isDark, toggleTheme, initTheme } = useTheme();
+const showAbout = ref(false);
 
 onMounted(() => {
+  initTheme();
   console.log("App mounted successfully");
 });
 </script>
@@ -11,15 +17,80 @@ onMounted(() => {
 <template>
   <main class="container">
     <div class="card">
-      <h1>WinAutoShutdown</h1>
+      <div class="header-row">
+        <h1>WinAutoShutdown</h1>
+        <div class="actions">
+          <button class="icon-btn" @click="toggleTheme" :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+            <!-- Sun icon -->
+            <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+            </svg>
+            <!-- Moon icon -->
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+            </svg>
+          </button>
+          <button class="icon-btn" @click="showAbout = true" title="About">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
       <TaskForm />
       <div class="divider"></div>
       <TaskList />
     </div>
+
+    <AboutModal :is-open="showAbout" @close="showAbout = false" />
   </main>
 </template>
 
 <style scoped>
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827; /* gray-900 */
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #6b7280; /* gray-500 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.icon-btn:hover {
+  background-color: #f3f4f6; /* gray-100 */
+  color: #1f2937; /* gray-800 */
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .divider {
   height: 1px;
   background-color: #e5e7eb;
@@ -69,32 +140,31 @@ body {
   align-items: center;
 }
 
-h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #111827; /* gray-900 */
-  margin-top: 0;
-  margin-bottom: 2rem;
-  text-align: center;
+/* Dark mode overrides using class strategy */
+:root.dark {
+  color: #f9fafb; /* gray-50 */
+  background-color: #111827; /* gray-900 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f9fafb; /* gray-50 */
-    background-color: #111827; /* gray-900 */
-  }
-  
-  .card {
-    background-color: #1f2937; /* gray-800 */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-  }
+:root.dark .card {
+  background-color: #1f2937; /* gray-800 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
 
-  h1 {
-    color: #f9fafb;
-  }
+:root.dark h1 {
+  color: #f9fafb;
+}
 
-  .divider {
-    background-color: #374151; /* gray-700 */
-  }
+:root.dark .divider {
+  background-color: #374151; /* gray-700 */
+}
+
+:root.dark .icon-btn {
+  color: #9ca3af;
+}
+
+:root.dark .icon-btn:hover {
+  background-color: #374151;
+  color: #f3f4f6;
 }
 </style>

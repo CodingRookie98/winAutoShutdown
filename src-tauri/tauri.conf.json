@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "new_app",
+  "productName": "WinAutoShutdown",
   "version": "0.1.0",
   "identifier": "com.winautoshutdown.app",
   "build": {
