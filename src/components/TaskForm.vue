@@ -244,39 +244,41 @@ input:focus, select:focus {
 }
 
 .btn-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-}
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+</style>
 
-:global(.dark) label {
+<style>
+  :root.dark .task-form label {
     color: #d1d5db; /* gray-300 */
   }
 
-  :global(.dark) input, :global(.dark) select {
+  :root.dark .task-form input, :root.dark .task-form select {
     background-color: #374151; /* gray-700 */
     border-color: #4b5563; /* gray-600 */
     color: white;
   }
 
-  :global(.dark) input:focus, :global(.dark) select:focus {
+  :root.dark .task-form input:focus, :root.dark .task-form select:focus {
     border-color: #60a5fa; /* blue-400 */
     box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
   }
 
-  :global(.dark) .tabs {
+  :root.dark .task-form .tabs {
       background-color: #374151; /* gray-700 */
   }
 
-  :global(.dark) .tabs button {
+  :root.dark .task-form .tabs button {
       color: #9ca3af; /* gray-400 */
   }
 
-  :global(.dark) .tabs button.active {
+  :root.dark .task-form .tabs button.active {
       background-color: #1f2937; /* gray-800 */
       color: #f3f4f6; /* gray-100 */
   }
   
-  :global(.dark) .time-field label {
+  :root.dark .task-form .time-field label {
       color: #9ca3af; /* gray-400 */
   }
 </style>

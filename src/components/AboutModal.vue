@@ -190,45 +190,47 @@ h3 {
   font-size: 0.75rem;
   color: #9ca3af;
 }
+</style>
 
+<style>
 /* Dark mode support */
-:global(.dark) .modal-content {
+:root.dark .modal-content {
   background-color: #1f2937;
   border: 1px solid #374151;
   color: #f3f4f6;
 }
 
-:global(.dark) .modal-header {
+:root.dark .modal-header {
   border-bottom-color: #374151;
 }
 
-:global(.dark) h2, :global(.dark) h3 {
+:root.dark .modal-content h2, :root.dark .modal-content h3 {
   color: #f9fafb;
 }
 
-:global(.dark) .close-btn {
+:root.dark .close-btn {
   color: #9ca3af;
 }
 
-:global(.dark) .close-btn:hover {
+:root.dark .close-btn:hover {
   background-color: #374151;
   color: #f3f4f6;
 }
 
-:global(.dark) .description {
+:root.dark .description {
   color: #d1d5db;
 }
 
-:global(.dark) .version {
+:root.dark .version {
   background-color: #374151;
   color: #9ca3af;
 }
 
-:global(.dark) .links a {
+:root.dark .links a {
   color: #60a5fa; /* blue-400 */
 }
 
-:global(.dark) .links a:hover {
+:root.dark .links a:hover {
   color: #93c5fd; /* blue-300 */
 }
 </style>

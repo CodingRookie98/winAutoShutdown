@@ -199,57 +199,59 @@ h3 {
 }
 
 .btn-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-}
-
-:global(.dark) h3 {
-    color: #d1d5db; /* gray-300 */
+      width: 1.25rem;
+      height: 1.25rem;
   }
+</style>
 
-  :global(.dark) .empty-state {
-      border-color: #374151; /* gray-700 */
-      color: #6b7280; /* gray-500 */
-  }
-
-  :global(.dark) .task-item {
-      background-color: #1f2937; /* gray-800 */
-      border-color: #374151; /* gray-700 */
-  }
+<style>
+  :root.dark .task-list h3 {
+      color: #d1d5db; /* gray-300 */
+    }
   
-  :global(.dark) .task-item:hover {
-      border-color: #4b5563; /* gray-600 */
-  }
-
-  :global(.dark) .task-type {
-      color: #f3f4f6; /* gray-100 */
-  }
-
-  :global(.dark) .task-time {
-      color: #9ca3af; /* gray-400 */
-  }
+    :root.dark .task-list .empty-state {
+        border-color: #374151; /* gray-700 */
+        color: #6b7280; /* gray-500 */
+    }
   
-  :global(.dark) .task-icon-wrapper.shutdown {
-      background-color: #7f1d1d; /* red-900 */
-      color: #f87171; /* red-400 */
-  }
+    :root.dark .task-list .task-item {
+        background-color: #1f2937; /* gray-800 */
+        border-color: #374151; /* gray-700 */
+    }
+    
+    :root.dark .task-list .task-item:hover {
+        border-color: #4b5563; /* gray-600 */
+    }
   
-  :global(.dark) .task-icon-wrapper.reboot {
-      background-color: #1e3a8a; /* blue-900 */
-      color: #60a5fa; /* blue-400 */
-  }
-
-  :global(.dark) .task-icon-wrapper.sleep {
-      background-color: #78350f; /* amber-900 */
-      color: #fbbf24; /* amber-400 */
-  }
-
-  :global(.dark) .task-icon-wrapper.lock {
-      background-color: #312e81; /* indigo-900 */
-      color: #818cf8; /* indigo-400 */
-  }
+    :root.dark .task-list .task-type {
+        color: #f3f4f6; /* gray-100 */
+    }
   
-  :global(.dark) .remove-btn:hover {
-      background-color: #7f1d1d; /* red-900 */
-  }
+    :root.dark .task-list .task-time {
+        color: #9ca3af; /* gray-400 */
+    }
+    
+    :root.dark .task-list .task-icon-wrapper.shutdown {
+        background-color: #7f1d1d; /* red-900 */
+        color: #f87171; /* red-400 */
+    }
+    
+    :root.dark .task-list .task-icon-wrapper.reboot {
+        background-color: #1e3a8a; /* blue-900 */
+        color: #60a5fa; /* blue-400 */
+    }
+  
+    :root.dark .task-list .task-icon-wrapper.sleep {
+        background-color: #78350f; /* amber-900 */
+        color: #fbbf24; /* amber-400 */
+    }
+  
+    :root.dark .task-list .task-icon-wrapper.lock {
+        background-color: #312e81; /* indigo-900 */
+        color: #818cf8; /* indigo-400 */
+    }
+    
+    :root.dark .task-list .remove-btn:hover {
+        background-color: #7f1d1d; /* red-900 */
+    }
 </style>
