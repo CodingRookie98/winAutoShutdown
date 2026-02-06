@@ -77,3 +77,6 @@ git commit -m "feat: add new feature"
 git push origin feature/my-feature
 # -> Go to GitHub/GitLab and open a PR to 'dev'
 ```
+
+## 6. File Operations
+- **Renaming/Moving**: ALWAYS use `git mv` for renaming or moving files to preserve version history.
