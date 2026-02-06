@@ -12,9 +12,11 @@
   "app": {
     "windows": [
       {
-        "title": "new_app",
-        "width": 800,
-        "height": 600
+        "title": "WinAutoShutdown",
+        "width": 520,
+        "height": 700,
+        "minWidth": 520,
+        "minHeight": 600
       }
     ],
     "security": {
