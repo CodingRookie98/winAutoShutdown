@@ -12,52 +12,40 @@
 **测试**: 运行 `pnpm tauri dev` 成功启动应用窗口。
 **状态**: 已完成
 
-## 阶段 2: 核心业务逻辑迁移 (Core Logic - Rust)
-**目标**: 使用 TDD (Red-Green-Refactor) 在 Rust 端重写电源管理和任务调度逻辑。
+## 阶段 2: 核心业务逻辑迁移 (Lightweight Rust)
+**目标**: 实现一个极简、可靠的 Rust 后端，仅负责“系统控制”和“防冻结计时”，复杂业务逻辑移交前端。
 **成功标准**:
 - [x] **TDD 环境配置**:
     - [x] 确保 `cargo test` 可运行。
     - [x] 引入 `mockall` 用于模拟系统调用。
-- [x] **Domain Core (TDD)**:
-    - [x] **Red**: 创建 `task_spec.rs`，测试 `Task` 实体创建、校验（如时间不能为过去）及序列化。
-    - [x] **Green**: 定义 `Task` 结构体及 `PowerAction` 枚举。
-    - [x] **Refactor**: 确保字段类型合适（如使用 `chrono` 处理时间），实现 `Serialize`/`Deserialize`。
-- [ ] **PowerManager 模块 (TDD)**:
-    - [ ] **Red**: 创建 `power_manager_spec.rs`，定义 `shutdown`, `reboot` 等接口，断言其调用了底层系统命令（通过 Mock）。
-    - [ ] **Green**: 实现 `PowerManager` trait 及 Windows 具体实现（使用 `std::process::Command` 或 WinAPI）。
-    - [ ] **Refactor**: 提取 `SystemCommandExecutor` trait 以便测试隔离，处理权限错误。
-- [ ] **TaskScheduler 模块 (TDD)**:
-    - [ ] **Red**: 创建 `scheduler_spec.rs`，测试添加任务、取消任务、任务到期回调触发。
-    - [ ] **Green**: 实现内存中的任务队列及定时检查逻辑（Tick Loop）。
-    - [ ] **Refactor**: 引入 `tokio` 异步运行时处理并发，确保调度器线程安全（Arc/Mutex）。
-- [ ] **SystemTray 状态机 (TDD)**:
-    - [ ] **Red**: 测试托盘菜单状态变更（如“运行中”->“暂停”）。
-    - [ ] **Green**: 实现托盘菜单状态逻辑。
-**测试**: 运行 `cargo test`，核心逻辑覆盖率目标 > 80%。
-**状态**: 未开始
+- [x] **SystemControl 模块 (TDD)**:
+    - [x] **Red**: 创建 `system_control_spec.rs`，定义 `shutdown`, `reboot` 接口，Mock 系统命令执行。
+    - [x] **Green**: 实现 `SystemControl` trait 及 Windows `shutdown /s /t 0` 调用。
+    - [x] **Refactor**: 处理命令执行错误，确保在非 Windows 环境下能编译通过（Stub）。
+- [x] **TimerService 模块 (TDD)**:
+    - [x] **Red**: 创建 `timer_spec.rs`，测试定时器回调触发。
+    - [x] **Green**: 使用 `std::thread` 或 `tokio` 实现一个简单的倒计时器，支持 `start(duration)` 和 `cancel()`。
+    - [x] **Refactor**: 确保计时器在后台线程运行，不会阻塞主线程。
+- [x] **Tauri Commands**:
+    - [x] 暴露 `start_shutdown_timer(seconds: u64)`。
+    - [x] 暴露 `cancel_timer()`。
+    - [x] 暴露 `execute_shutdown_now()`。
+**测试**: 运行 `cargo test`，确保计时准确，命令构建正确。
+**状态**: 已完成
 
-## 阶段 3: 前端界面实现 (UI Implementation - Vue)
-**目标**: 使用组件测试驱动开发 (Component TDD) 构建 Vue 界面。
+## 阶段 3: 前端界面与业务逻辑 (Vue + Pinia)
+**目标**: 使用 Vue 实现所有用户交互、任务管理、配置持久化。
 **成功标准**:
 - [ ] **TDD 环境配置**:
-    - [ ] 安装并配置 Vitest, @vue/test-utils, happy-dom。
-    - [ ] 配置测试覆盖率报告。
-- [ ] **State Management (Pinia TDD)**:
-    - [ ] **Red**: 创建 `stores/taskStore.spec.ts`，测试 `addTask`, `removeTask`, `loadTasks` 的状态变更。
-    - [ ] **Green**: 实现 `useTaskStore` 及基本 Actions。
-    - [ ] **Refactor**: 抽离通用逻辑，优化 Store 结构，确保类型安全。
-- [ ] **UI Components (Component TDD)**:
-    - [ ] **Atomic Components**:
-        - [ ] **Red**: 编写 `BaseButton.spec.ts` (测试点击事件, loading 状态样式)。
-        - [ ] **Green**: 实现 `BaseButton.vue`。
-    - [ ] **TaskList Module**:
-        - [ ] **Red**: 编写 `TaskList.spec.ts`，模拟 Store 数据，验证列表项渲染及删除按钮点击。
-        - [ ] **Green**: 实现 `TaskList.vue` 及 `TaskItem.vue`。
-    - [ ] **TaskForm Module**:
-        - [ ] **Red**: 编写 `TaskForm.spec.ts`，验证表单校验（非空、时间格式）及提交事件。
-        - [ ] **Green**: 实现 `TaskForm.vue`。
-- [ ] **UI 集成**: 集成 Naive UI，组装 `App.vue`。
-**测试**: 运行 `pnpm test`，组件逻辑覆盖率目标 > 80%。
+    - [ ] 安装 Vitest, @vue/test-utils, Pinia。
+- [ ] **Task Store (Pinia TDD)**:
+    - [ ] **Red**: 测试任务的添加、删除、倒计时计算逻辑。
+    - [ ] **Green**: 实现 `useTaskStore`，包含 `tasks` 数组和 `startTask` action。
+    - [ ] **Integration**: 在 `startTask` 中调用 Rust 的 `start_shutdown_timer`。
+- [ ] **UI Components**:
+    - [ ] 任务列表、添加任务表单、倒计时展示。
+- [ ] **持久化**:
+    - [ ] 使用 `pinia-plugin-persistedstate` 或 `localStorage` 保存任务配置。
 **状态**: 未开始
 
 ## 阶段 4: 系统集成与完善 (Integration & Polish)
