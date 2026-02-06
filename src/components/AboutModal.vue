@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { open } from '@tauri-apps/plugin-opener';
+
 defineProps<{
   isOpen: boolean
 }>()
@@ -6,6 +8,14 @@ defineProps<{
 defineEmits<{
   (e: 'close'): void
 }>()
+
+async function openLink(url: string) {
+  try {
+    await open(url);
+  } catch (error) {
+    console.error('Failed to open link:', error);
+  }
+}
 </script>
 
 <template>
@@ -35,9 +45,9 @@ defineEmits<{
         </p>
         
         <div class="links">
-          <a href="https://github.com/CodingRookie98/winAutoShutdown" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+          <a href="#" @click.prevent="openLink('https://github.com/CodingRookie98/winAutoShutdown')">GitHub Repository</a>
           <span class="separator">|</span>
-          <a href="https://github.com/CodingRookie98" target="_blank" rel="noopener noreferrer">Author</a>
+          <a href="#" @click.prevent="openLink('https://github.com/CodingRookie98')">Author</a>
         </div>
         
         <div class="footer">
@@ -185,6 +195,7 @@ h3 {
 :global(.dark) .modal-content {
   background-color: #1f2937;
   border: 1px solid #374151;
+  color: #f3f4f6;
 }
 
 :global(.dark) .modal-header {
@@ -211,5 +222,13 @@ h3 {
 :global(.dark) .version {
   background-color: #374151;
   color: #9ca3af;
+}
+
+:global(.dark) .links a {
+  color: #60a5fa; /* blue-400 */
+}
+
+:global(.dark) .links a:hover {
+  color: #93c5fd; /* blue-300 */
 }
 </style>
