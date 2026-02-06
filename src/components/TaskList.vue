@@ -203,55 +203,53 @@ h3 {
     height: 1.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  h3 {
+:global(.dark) h3 {
     color: #d1d5db; /* gray-300 */
   }
 
-  .empty-state {
+  :global(.dark) .empty-state {
       border-color: #374151; /* gray-700 */
       color: #6b7280; /* gray-500 */
   }
 
-  .task-item {
+  :global(.dark) .task-item {
       background-color: #1f2937; /* gray-800 */
       border-color: #374151; /* gray-700 */
   }
   
-  .task-item:hover {
+  :global(.dark) .task-item:hover {
       border-color: #4b5563; /* gray-600 */
   }
 
-  .task-type {
+  :global(.dark) .task-type {
       color: #f3f4f6; /* gray-100 */
   }
 
-  .task-time {
+  :global(.dark) .task-time {
       color: #9ca3af; /* gray-400 */
   }
   
-  .task-icon-wrapper.shutdown {
+  :global(.dark) .task-icon-wrapper.shutdown {
       background-color: #7f1d1d; /* red-900 */
       color: #f87171; /* red-400 */
   }
   
-  .task-icon-wrapper.reboot {
+  :global(.dark) .task-icon-wrapper.reboot {
       background-color: #1e3a8a; /* blue-900 */
       color: #60a5fa; /* blue-400 */
   }
 
-  .task-icon-wrapper.sleep {
+  :global(.dark) .task-icon-wrapper.sleep {
       background-color: #78350f; /* amber-900 */
       color: #fbbf24; /* amber-400 */
   }
 
-  .task-icon-wrapper.lock {
+  :global(.dark) .task-icon-wrapper.lock {
       background-color: #312e81; /* indigo-900 */
       color: #818cf8; /* indigo-400 */
   }
   
-  .remove-btn:hover {
+  :global(.dark) .remove-btn:hover {
       background-color: #7f1d1d; /* red-900 */
   }
-}
 </style>

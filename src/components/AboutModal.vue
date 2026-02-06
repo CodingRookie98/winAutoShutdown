@@ -26,7 +26,7 @@ defineEmits<{
             <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
           </svg>
           <h3>WinAutoShutdown</h3>
-          <span class="version">v0.1.0</span>
+          <span class="version">v1.2.0</span>
         </div>
         
         <p class="description">
@@ -35,7 +35,9 @@ defineEmits<{
         </p>
         
         <div class="links">
-          <a href="https://github.com/yourusername/winAutoShutdown" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+          <a href="https://github.com/CodingRookie98/winAutoShutdown" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+          <span class="separator">|</span>
+          <a href="https://github.com/CodingRookie98" target="_blank" rel="noopener noreferrer">Author</a>
         </div>
         
         <div class="footer">
@@ -166,6 +168,11 @@ h3 {
 
 .links a:hover {
   text-decoration: underline;
+}
+
+.separator {
+  margin: 0 0.5rem;
+  color: #9ca3af;
 }
 
 .footer {

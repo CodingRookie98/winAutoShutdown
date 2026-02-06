@@ -248,37 +248,35 @@ input:focus, select:focus {
   height: 1.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  label {
+:global(.dark) label {
     color: #d1d5db; /* gray-300 */
   }
 
-  input, select {
+  :global(.dark) input, :global(.dark) select {
     background-color: #374151; /* gray-700 */
     border-color: #4b5563; /* gray-600 */
     color: white;
   }
 
-  input:focus, select:focus {
+  :global(.dark) input:focus, :global(.dark) select:focus {
     border-color: #60a5fa; /* blue-400 */
     box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
   }
 
-  .tabs {
+  :global(.dark) .tabs {
       background-color: #374151; /* gray-700 */
   }
 
-  .tabs button {
+  :global(.dark) .tabs button {
       color: #9ca3af; /* gray-400 */
   }
 
-  .tabs button.active {
+  :global(.dark) .tabs button.active {
       background-color: #1f2937; /* gray-800 */
       color: #f3f4f6; /* gray-100 */
   }
   
-  .time-field label {
+  :global(.dark) .time-field label {
       color: #9ca3af; /* gray-400 */
   }
-}
 </style>
