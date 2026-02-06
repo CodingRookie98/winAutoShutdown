@@ -1,6 +1,6 @@
 # WinAutoShutdown (Rust + Tauri + Vue)
 
-> **English** | [中文](./README_zh-CN.md)
+> **English** | [中文](./docs/README_zh-CN.md)
 
 A modern Windows auto-shutdown/task scheduling tool built on Rust and Tauri, providing a lightweight, secure, and beautiful user experience.
 
