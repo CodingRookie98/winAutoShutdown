@@ -36,17 +36,17 @@
 ## 阶段 3: 前端界面与业务逻辑 (Vue + Pinia)
 **目标**: 使用 Vue 实现所有用户交互、任务管理、配置持久化。
 **成功标准**:
-- [ ] **TDD 环境配置**:
-    - [ ] 安装 Vitest, @vue/test-utils, Pinia。
-- [ ] **Task Store (Pinia TDD)**:
-    - [ ] **Red**: 测试任务的添加、删除、倒计时计算逻辑。
-    - [ ] **Green**: 实现 `useTaskStore`，包含 `tasks` 数组和 `startTask` action。
-    - [ ] **Integration**: 在 `startTask` 中调用 Rust 的 `start_shutdown_timer`。
-- [ ] **UI Components**:
-    - [ ] 任务列表、添加任务表单、倒计时展示。
+- [x] **TDD 环境配置**:
+    - [x] 安装 Vitest, @vue/test-utils, Pinia。
+- [x] **Task Store (Pinia TDD)**:
+    - [x] **Red**: 测试任务的添加、删除、倒计时计算逻辑。
+    - [x] **Green**: 实现 `useTaskStore`，包含 `tasks` 数组和 `startTask` action。
+    - [x] **Integration**: 在 `startTask` 中调用 Rust 的 `start_shutdown_timer`。
+- [x] **UI Components**:
+    - [x] 任务列表、添加任务表单、倒计时展示。
 - [ ] **持久化**:
     - [ ] 使用 `pinia-plugin-persistedstate` 或 `localStorage` 保存任务配置。
-**状态**: 未开始
+**状态**: 已完成 (部分持久化留待阶段4)
 
 ## 阶段 4: 系统集成与完善 (Integration & Polish)
 **目标**: 完成前后端对接，确保端到端流程符合预期。
