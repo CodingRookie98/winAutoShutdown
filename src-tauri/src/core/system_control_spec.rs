@@ -1,6 +1,5 @@
 use super::system_control::SystemControl;
 use mockall::mock;
-use std::process::Command;
 
 // Mock for SystemControl
 mock! {
@@ -8,6 +7,8 @@ mock! {
     impl SystemControl for SystemControl {
         fn shutdown(&self) -> Result<(), String>;
         fn reboot(&self) -> Result<(), String>;
+        fn sleep(&self) -> Result<(), String>;
+        fn lock(&self) -> Result<(), String>;
     }
 }
 
@@ -29,4 +30,24 @@ fn test_mock_reboot_call() {
         .returning(|| Ok(()));
 
     assert_eq!(mock.reboot(), Ok(()));
+}
+
+#[test]
+fn test_mock_sleep_call() {
+    let mut mock = MockSystemControl::new();
+    mock.expect_sleep()
+        .times(1)
+        .returning(|| Ok(()));
+
+    assert_eq!(mock.sleep(), Ok(()));
+}
+
+#[test]
+fn test_mock_lock_call() {
+    let mut mock = MockSystemControl::new();
+    mock.expect_lock()
+        .times(1)
+        .returning(|| Ok(()));
+
+    assert_eq!(mock.lock(), Ok(()));
 }

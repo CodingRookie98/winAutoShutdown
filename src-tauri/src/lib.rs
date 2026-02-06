@@ -3,10 +3,20 @@ pub mod core;
 
 use core::system_control::{SystemControl, WindowsSystemControl};
 use core::timer::TimerService;
+use serde::Deserialize;
 use tauri::State;
 
 struct AppState {
     timer: TimerService,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+enum SystemAction {
+    Shutdown,
+    Reboot,
+    Sleep,
+    Lock,
 }
 
 #[tauri::command]
@@ -34,9 +44,14 @@ fn cancel_timer(state: State<'_, AppState>) {
 }
 
 #[tauri::command]
-fn execute_shutdown_now() -> Result<(), String> {
+fn execute_system_action(action: SystemAction) -> Result<(), String> {
     let system_control = WindowsSystemControl::new();
-    system_control.shutdown()
+    match action {
+        SystemAction::Shutdown => system_control.shutdown(),
+        SystemAction::Reboot => system_control.reboot(),
+        SystemAction::Sleep => system_control.sleep(),
+        SystemAction::Lock => system_control.lock(),
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -50,7 +65,7 @@ pub fn run() {
             greet,
             start_shutdown_timer,
             cancel_timer,
-            execute_shutdown_now
+            execute_system_action
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
