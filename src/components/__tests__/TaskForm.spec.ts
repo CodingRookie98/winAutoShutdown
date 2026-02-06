@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { useTaskStore } from '../../stores/taskStore'
 import TaskForm from '../TaskForm.vue'
