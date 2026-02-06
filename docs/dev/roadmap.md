@@ -27,29 +27,29 @@
 
 ## 阶段 4: 系统集成与功能增强 (System Integration & Enhancement)
 **目标**: 基于 `design.md` 实现真实的 Windows 系统调用，并升级前端以支持高精度时间选择。
-**当前状态**: 🔴 未开始
+**当前状态**: � 进行中
 
-### 4.1 后端: SystemControl 真实实现 (windows-rs)
+### 4.1 后端: SystemControl 真实实现 (windows-rs) [✅ 已完成]
 > 参考 design.md 第 3.1 节
-- [ ] **依赖配置**:
-    - [ ] 在 `Cargo.toml` 中添加 `windows` crate (features: Win32_Security, Shutdown, Power)。
-- [ ] **权限管理 (Privilege)**:
-    - [ ] 实现 `enable_shutdown_privilege` (LookupPrivilegeValue + AdjustTokenPrivileges)。
-- [ ] **API 封装 (Unsafe Wrapper)**:
-    - [ ] 实现 `shutdown()` -> `ExitWindowsEx(EWX_SHUTDOWN)`.
-    - [ ] 实现 `reboot()` -> `ExitWindowsEx(EWX_REBOOT)`.
-    - [ ] 实现 `sleep()` / `hibernate()` -> `SetSuspendState`.
-    - [ ] 实现 `lock()` -> `LockWorkStation`.
-- [ ] **Command 接入**:
-    - [ ] 替换 `lib.rs` 中的 Mock 实现，接入真实逻辑。
+- [x] **依赖配置**:
+    - [x] 在 `Cargo.toml` 中添加 `windows` crate (features: Win32_Security, Shutdown, Power)。
+- [x] **权限管理 (Privilege)**:
+    - [x] 实现 `enable_shutdown_privilege` (LookupPrivilegeValue + AdjustTokenPrivileges)。
+- [x] **API 封装 (Unsafe Wrapper)**:
+    - [x] 实现 `shutdown()` -> `ExitWindowsEx(EWX_SHUTDOWN)`.
+    - [x] 实现 `reboot()` -> `ExitWindowsEx(EWX_REBOOT)`.
+    - [x] 实现 `sleep()` / `hibernate()` -> `SetSuspendState`.
+    - [x] 实现 `lock()` -> `LockWorkStation`.
+- [x] **Command 接入**:
+    - [x] 替换 `lib.rs` 中的 Mock 实现，接入真实逻辑。
 
 ### 4.2 前端: 调度器与 UI 升级 (UI/UX Upgrade)
 > 参考 design.md 第 3.2 节
 - [ ] **UI 组件重构 (TaskForm.vue)**:
     - [ ] **倒计时模式**: 替换单一输入框，实现 [天/时/分/秒] 组合输入组件。
     - [ ] **指定时间模式**: 引入日期时间选择器 (Native `datetime-local` 或组件库)，支持 `YYYY-MM-DD HH:mm:ss`。
-- [ ] **逻辑升级 (TaskStore)**:
-    - [ ] 统一使用 "目标时间戳 (Target Timestamp)" 作为内部存储格式。
+- [x] **逻辑升级 (TaskStore)**:
+    - [x] 统一使用 "目标时间戳 (Target Timestamp)" 作为内部存储格式。
     - [ ] 优化倒计时显示逻辑 (格式化为 DD:HH:MM:SS)。
     - [ ] 处理跨天/跨月的时间计算。
 
