@@ -1,24 +1,63 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useTaskStore } from '../stores/taskStore'
 import type { SystemAction } from '../types'
 
 const store = useTaskStore()
-const duration = ref(60)
 const action = ref<SystemAction>('shutdown')
+const mode = ref<'countdown' | 'specific'>('countdown')
+
+// Countdown inputs
+const days = ref(0)
+const hours = ref(0)
+const minutes = ref(1) // Default to 1 minute
+const seconds = ref(0)
+
+// Specific time input
+const specificTime = ref('')
+
+// Initialize specificTime with current time + 1 hour for better UX
+const now = new Date();
+now.setHours(now.getHours() + 1);
+now.setMinutes(0);
+now.setSeconds(0);
+// Format to YYYY-MM-DDTHH:mm for datetime-local input
+const isoString = now.toISOString();
+specificTime.value = isoString.substring(0, 16); // Remove seconds and milliseconds
 
 async function handleSubmit() {
-  await store.addTask({
-    action: action.value,
-    duration: duration.value
-  })
+  if (mode.value === 'countdown') {
+    const totalSeconds = 
+      (days.value * 86400) + 
+      (hours.value * 3600) + 
+      (minutes.value * 60) + 
+      seconds.value;
+      
+    if (totalSeconds <= 0) return;
+    
+    await store.addTask({
+      action: action.value,
+      duration: totalSeconds
+    })
+  } else {
+    if (!specificTime.value) return;
+    const target = new Date(specificTime.value).getTime();
+    if (target <= Date.now()) {
+        alert("Target time must be in the future");
+        return;
+    }
+    
+    await store.addTask({
+      action: action.value,
+      targetTimestamp: target
+    })
+  }
 }
 </script>
 
 <template>
   <form @submit.prevent="handleSubmit" class="task-form">
-    <div class="form-row">
-      <div class="form-group">
+    <div class="form-group">
         <label>Action</label>
         <div class="select-wrapper">
           <select v-model="action">
@@ -31,12 +70,37 @@ async function handleSubmit() {
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
           </svg>
         </div>
-      </div>
-      
-      <div class="form-group">
-        <label>Duration (sec)</label>
-        <input type="number" v-model="duration" min="1" required placeholder="60" />
-      </div>
+    </div>
+
+    <div class="tabs">
+        <button type="button" :class="{ active: mode === 'countdown' }" @click="mode = 'countdown'">Countdown</button>
+        <button type="button" :class="{ active: mode === 'specific' }" @click="mode = 'specific'">Specific Time</button>
+    </div>
+
+    <div v-if="mode === 'countdown'" class="countdown-inputs">
+        <div class="time-field">
+            <label>Days</label>
+            <input type="number" v-model="days" min="0" placeholder="0" />
+        </div>
+        <div class="time-field">
+            <label>Hours</label>
+            <input type="number" v-model="hours" min="0" max="23" placeholder="0" />
+        </div>
+        <div class="time-field">
+            <label>Mins</label>
+            <input type="number" v-model="minutes" min="0" max="59" placeholder="0" />
+        </div>
+        <div class="time-field">
+            <label>Secs</label>
+            <input type="number" v-model="seconds" min="0" max="59" placeholder="0" />
+        </div>
+    </div>
+
+    <div v-else class="specific-input">
+        <div class="form-group">
+            <label>Target Time</label>
+            <input type="datetime-local" v-model="specificTime" required />
+        </div>
     </div>
     
     <button type="submit" class="submit-btn">
@@ -56,10 +120,53 @@ async function handleSubmit() {
   width: 100%;
 }
 
-.form-row {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
+.tabs {
+    display: flex;
+    background-color: #f3f4f6; /* gray-100 */
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280; /* gray-500 */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tabs button.active {
+    background-color: white;
+    color: #111827; /* gray-900 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.countdown-inputs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.time-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.time-field label {
+    font-size: 0.75rem;
+    color: #6b7280; /* gray-500 */
+    text-align: center;
+}
+
+.time-field input {
+    text-align: center;
+    padding: 0.5rem;
 }
 
 .form-group {
@@ -155,6 +262,23 @@ input:focus, select:focus {
   input:focus, select:focus {
     border-color: #60a5fa; /* blue-400 */
     box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+  }
+
+  .tabs {
+      background-color: #374151; /* gray-700 */
+  }
+
+  .tabs button {
+      color: #9ca3af; /* gray-400 */
+  }
+
+  .tabs button.active {
+      background-color: #1f2937; /* gray-800 */
+      color: #f3f4f6; /* gray-100 */
+  }
+  
+  .time-field label {
+      color: #9ca3af; /* gray-400 */
   }
 }
 </style>
