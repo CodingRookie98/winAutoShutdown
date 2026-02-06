@@ -25,9 +25,9 @@
 
 ---
 
-## 阶段 4: 系统集成与功能增强 (System Integration & Enhancement)
+## 阶段 4: 系统集成与功能增强 (System Integration & Enhancement) [✅ 已完成]
 **目标**: 基于 `design.md` 实现真实的 Windows 系统调用，并升级前端以支持高精度时间选择。
-**当前状态**: � 进行中
+**当前状态**: ✅ 已完成
 
 ### 4.1 后端: SystemControl 真实实现 (windows-rs) [✅ 已完成]
 > 参考 design.md 第 3.1 节
@@ -63,17 +63,17 @@
 
 ## 阶段 5: 打包与交付 (Packaging & Delivery)
 **目标**: 生成最终可发布版本。
-**当前状态**: � 进行中
+**当前状态**: 🟡 进行中
 
-- [ ] **功能增强 (Enhancements)**:
-    - [ ] 深色/浅色模式切换。
-    - [ ] 关于页面 (About Page)。
-- [ ] **应用配置**:
-    - [ ] 配置应用图标 (Icons)。
-    - [ ] 设置应用元数据 (Identifier, Version, ProductName)。
-- [ ] **构建发布**:
-    - [ ] 运行 `pnpm tauri build`。
-    - [ ] 验证生成的 `.exe` / `.msi` 安装包文件名是否正确。
+- [x] **功能增强 (Enhancements)**:
+    - [x] 深色/浅色模式切换。
+    - [x] 关于页面 (About Page)。
+- [x] **应用配置**:
+    - [x] 配置应用图标 (Icons)。
+    - [x] 设置应用元数据 (Identifier, Version, ProductName)。
+- [x] **构建发布**:
+    - [x] 运行 `pnpm tauri build`。
+    - [x] 验证生成的 `.exe` / `.msi` 安装包文件名是否正确。
 - [ ] **清理与归档**:
     - [ ] 移除 `legacy/` 代码。
     - [ ] 完善最终用户文档。
