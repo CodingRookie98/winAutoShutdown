@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { useTaskStore } from '../taskStore'
 import { invoke } from '@tauri-apps/api/core'
 
@@ -12,6 +12,11 @@ describe('Task Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.mocked(invoke).mockClear()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('initializes with empty tasks', () => {
@@ -19,25 +24,30 @@ describe('Task Store', () => {
     expect(store.tasks).toEqual([])
   })
 
-  it('adds a task', () => {
+  it('adds a task with duration', () => {
     const store = useTaskStore()
     const task = { action: 'shutdown' as const, duration: 60 }
     store.addTask(task)
     expect(store.tasks.length).toBe(1)
     expect(store.tasks[0].action).toBe('shutdown')
     expect(store.tasks[0].duration).toBe(60)
-    expect(store.tasks[0].remaining).toBe(60)
+    expect(store.tasks[0].targetTimestamp).toBeDefined()
+    // remaining might be 59 or 60 depending on ms precision, usually 60 initially
+    expect(store.tasks[0].remaining).toBeGreaterThanOrEqual(59) 
     expect(store.tasks[0].id).toBeDefined()
   })
 
-  // We temporarily disabled backend timer start in frontend
-  // it('calls backend to start timer when adding task', async () => {
-  //   const store = useTaskStore()
-  //   const task = { action: 'shutdown' as const, duration: 60 }
-  //   store.addTask(task)
-  //   
-  //   expect(invoke).toHaveBeenCalledWith('start_shutdown_timer', { seconds: 60 })
-  // })
+  it('adds a task with targetTimestamp', () => {
+    const store = useTaskStore()
+    const now = Date.now()
+    const target = now + 60000
+    const task = { action: 'reboot' as const, targetTimestamp: target }
+    store.addTask(task)
+    expect(store.tasks.length).toBe(1)
+    expect(store.tasks[0].action).toBe('reboot')
+    expect(store.tasks[0].targetTimestamp).toBe(target)
+    expect(store.tasks[0].remaining).toBeGreaterThanOrEqual(59)
+  })
 
   it('removes a task', () => {
     const store = useTaskStore()
@@ -46,16 +56,4 @@ describe('Task Store', () => {
     store.removeTask(taskId)
     expect(store.tasks.length).toBe(0)
   })
-
-  // We temporarily disabled backend timer cancellation
-  // it('calls backend to cancel timer when removing task', async () => {
-  //   const store = useTaskStore()
-  //   store.addTask({ action: 'shutdown' as const, duration: 60 })
-  //   const taskId = store.tasks[0].id
-  //   
-  //   vi.mocked(invoke).mockClear()
-  //   
-  //   store.removeTask(taskId)
-  //   expect(invoke).toHaveBeenCalledWith('cancel_timer')
-  // })
 })

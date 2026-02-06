@@ -16,7 +16,7 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
-  async function addTask(input: Omit<Task, 'id' | 'createdAt' | 'remaining'>) {
+  async function addTask(input: { action: SystemAction, duration?: number, targetTimestamp?: number }) {
     if (timerId.value) {
       clearInterval(timerId.value)
       timerId.value = null
@@ -27,11 +27,23 @@ export const useTaskStore = defineStore('task', () => {
     // TODO: Re-enable backend timer when it supports actions
     // await invoke('cancel_timer')
 
+    let target = input.targetTimestamp;
+    if (!target && input.duration) {
+        target = Date.now() + input.duration * 1000;
+    }
+    
+    if (!target) {
+        console.error("Invalid task input: missing duration or targetTimestamp");
+        return;
+    }
+
     const task: Task = {
       id: crypto.randomUUID(),
       createdAt: Date.now(),
-      remaining: input.duration,
-      ...input
+      action: input.action,
+      targetTimestamp: target,
+      duration: input.duration,
+      remaining: Math.max(0, Math.floor((target - Date.now()) / 1000))
     }
     tasks.value.push(task)
     
@@ -39,18 +51,22 @@ export const useTaskStore = defineStore('task', () => {
 
     timerId.value = window.setInterval(async () => {
       const currentTask = tasks.value.find(t => t.id === task.id)
-      if (currentTask && currentTask.remaining > 0) {
-        currentTask.remaining--
+      if (!currentTask) {
+          if (timerId.value) { clearInterval(timerId.value); timerId.value = null; }
+          return;
+      }
+      
+      const now = Date.now();
+      if (currentTask.targetTimestamp > now) {
+        currentTask.remaining = Math.floor((currentTask.targetTimestamp - now) / 1000);
       } else {
+        // Expired
         if (timerId.value) {
            clearInterval(timerId.value)
            timerId.value = null
         }
-        if (currentTask) {
-            await executeAction(currentTask.action)
-            // Optional: remove task after execution
-            // removeTask(currentTask.id)
-        }
+        await executeAction(currentTask.action)
+        removeTask(currentTask.id)
       }
     }, 1000)
   }
