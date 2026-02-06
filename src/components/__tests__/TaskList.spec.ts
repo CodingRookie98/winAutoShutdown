@@ -18,8 +18,8 @@ describe('TaskList.vue', () => {
           initialState: {
             task: {
               tasks: [
-                { id: '1', type: 'shutdown', duration: 60, remaining: 60, createdAt: 1000 },
-                { id: '2', type: 'reboot', duration: 120, remaining: 120, createdAt: 2000 }
+                { id: '1', action: 'shutdown', duration: 60, remaining: 60, createdAt: 1000 },
+                { id: '2', action: 'reboot', duration: 120, remaining: 120, createdAt: 2000 }
               ]
             }
           }
@@ -41,7 +41,7 @@ describe('TaskList.vue', () => {
             initialState: {
               task: {
                 tasks: [
-                  { id: '1', type: 'shutdown', duration: 60, remaining: 60, createdAt: 1000 }
+                  { id: '1', action: 'shutdown', duration: 60, remaining: 60, createdAt: 1000 }
                 ]
               }
             },

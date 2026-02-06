@@ -11,7 +11,7 @@ onMounted(() => {
 <template>
   <main class="container">
     <div class="card">
-      <h1>Auto Shutdown</h1>
+      <h1>WinAutoShutdown</h1>
       <TaskForm />
       <div class="divider"></div>
       <TaskList />

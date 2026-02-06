@@ -16,10 +16,17 @@ function formatDuration(seconds: number) {
   return `${m}m ${s}s`
 }
 
-function getTaskIcon(type: string) {
-    return type === 'reboot' 
-        ? 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99' 
-        : 'M5.636 5.636a9 9 0 1012.728 0M12 3v9';
+function getTaskIcon(action: string) {
+    switch (action) {
+        case 'reboot':
+            return 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99';
+        case 'sleep':
+            return 'M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z';
+        case 'lock':
+            return 'M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z';
+        default: // shutdown
+            return 'M5.636 5.636a9 9 0 1012.728 0M12 3v9';
+    }
 }
 </script>
 
@@ -35,13 +42,13 @@ function getTaskIcon(type: string) {
     <ul v-else class="list-container">
       <li v-for="task in tasks" :key="task.id" class="task-item">
         <div class="task-content">
-            <div class="task-icon-wrapper" :class="task.type">
+            <div class="task-icon-wrapper" :class="task.action">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="task-icon">
-                    <path stroke-linecap="round" stroke-linejoin="round" :d="getTaskIcon(task.type)" />
+                    <path stroke-linecap="round" stroke-linejoin="round" :d="getTaskIcon(task.action)" />
                 </svg>
             </div>
             <div class="task-details">
-                <span class="task-type">{{ task.type }}</span>
+                <span class="task-type">{{ task.action }}</span>
                 <span class="task-time">{{ formatDuration(task.remaining) }}</span>
             </div>
         </div>
@@ -137,6 +144,16 @@ h3 {
     color: #3b82f6; /* blue-500 */
 }
 
+.task-icon-wrapper.sleep {
+    background-color: #fef3c7; /* amber-100 */
+    color: #d97706; /* amber-500 */
+}
+
+.task-icon-wrapper.lock {
+    background-color: #e0e7ff; /* indigo-100 */
+    color: #4f46e5; /* indigo-500 */
+}
+
 .task-icon {
     width: 1.5rem;
     height: 1.5rem;
@@ -218,6 +235,16 @@ h3 {
   .task-icon-wrapper.reboot {
       background-color: #1e3a8a; /* blue-900 */
       color: #60a5fa; /* blue-400 */
+  }
+
+  .task-icon-wrapper.sleep {
+      background-color: #78350f; /* amber-900 */
+      color: #fbbf24; /* amber-400 */
+  }
+
+  .task-icon-wrapper.lock {
+      background-color: #312e81; /* indigo-900 */
+      color: #818cf8; /* indigo-400 */
   }
   
   .remove-btn:hover {
