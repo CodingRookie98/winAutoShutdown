@@ -10,7 +10,6 @@ const showAbout = ref(false);
 
 onMounted(() => {
   initTheme();
-  console.log("App mounted successfully");
 });
 </script>
 

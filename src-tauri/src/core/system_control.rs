@@ -27,6 +27,12 @@ pub trait SystemControl {
 // Implementation struct
 pub struct WindowsSystemControl;
 
+impl Default for WindowsSystemControl {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl WindowsSystemControl {
     pub fn new() -> Self {
         Self

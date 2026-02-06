@@ -7,6 +7,12 @@ pub struct TimerService {
     cancellation_token: Arc<Mutex<bool>>,
 }
 
+impl Default for TimerService {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TimerService {
     pub fn new() -> Self {
         Self {
