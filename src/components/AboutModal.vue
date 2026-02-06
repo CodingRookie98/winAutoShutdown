@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { open } from '@tauri-apps/plugin-opener';
+import { openUrl } from '@tauri-apps/plugin-opener';
 
 defineProps<{
   isOpen: boolean
@@ -11,7 +11,7 @@ defineEmits<{
 
 async function openLink(url: string) {
   try {
-    await open(url);
+    await openUrl(url);
   } catch (error) {
     console.error('Failed to open link:', error);
   }
