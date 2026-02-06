@@ -10,83 +10,91 @@ onMounted(() => {
 
 <template>
   <main class="container">
-    <h1>WinAutoShutdown</h1>
-    <TaskForm />
-    <TaskList />
+    <div class="card">
+      <h1>Auto Shutdown</h1>
+      <TaskForm />
+      <div class="divider"></div>
+      <TaskList />
+    </div>
   </main>
 </template>
 
 <style scoped>
+.divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 2rem 0;
+  width: 100%;
+}
 </style>
 <style>
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1.5;
   font-weight: 400;
 
-  color: #0f0f0f;
-  background-color: #f6f6f6;
+  color: #1f2937; /* gray-800 */
+  background-color: #f3f4f6; /* gray-100 */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }
 
-.container {
+body {
   margin: 0;
-  padding-top: 5vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  text-align: center;
   min-height: 100vh;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 h1 {
-  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827; /* gray-900 */
+  margin-top: 0;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
+    color: #f9fafb; /* gray-50 */
+    background-color: #111827; /* gray-900 */
   }
-}
+  
+  .card {
+    background-color: #1f2937; /* gray-800 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  }
 
-input,
-button,
-select {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
+  h1 {
+    color: #f9fafb;
+  }
 
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button,
-select {
-  outline: none;
+  .divider {
+    background-color: #374151; /* gray-700 */
+  }
 }
 </style>
