@@ -136,14 +136,8 @@ jobs:
           VERSION="${{ needs.extract-changelog.outputs.version }}"
           DATE=$(date +%Y-%m-%d)
 
-          # Add new empty Unreleased section after the header
-          sed -i "/^## \\[Unreleased\\]/a\\\n## [$VERSION] - $DATE" CHANGELOG.md
-
-          # Clear Unreleased section content (keep only the header)
-          sed -i '/^## \\[Unreleased\\]/,/^## \\[/{/^## \\[Unreleased\\]/!{/^## \\[/!d}}' CHANGELOG.md
-
-          # Add empty line after Unreleased header
-          sed -i 's/^## \\[Unreleased\\]$/## [Unreleased]\n/' CHANGELOG.md
+          # Add new version section after Unreleased header
+          sed -i "0,/^## \\[Unreleased\\]$/s//## [Unreleased]\n\n## [$VERSION] - $DATE/" CHANGELOG.md
 
       - name: Commit changes
         run: |

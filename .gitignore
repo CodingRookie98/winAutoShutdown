@@ -23,6 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-.agent/
-.agents/
-.trae/
+/.agent/
+/.agents/
+/.trae/
