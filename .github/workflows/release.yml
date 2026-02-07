@@ -20,7 +20,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.get-version.outputs.version }}
-      release_notes: ${{ steps.extract.outputs.notes }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,24 +36,25 @@ jobs:
           echo "Version: $VERSION"
 
       - name: Extract release notes from CHANGELOG
-        id: extract
         run: |
           VERSION="${{ steps.get-version.outputs.version }}"
-          
+
           # Extract content between ## [VERSION] and next ## [ or end of file
           NOTES=$(awk "/^## \\[$VERSION\\]/ {flag=1; next} /^## \\[/ {flag=0} flag" CHANGELOG.md)
-          
+
           if [ -z "$NOTES" ]; then
             echo "Warning: No release notes found for version $VERSION in CHANGELOG.md"
             NOTES="Release $VERSION"
           fi
-          
-          # Escape special characters for GitHub Actions
-          NOTES="${NOTES//'%'/'%25'}"
-          NOTES="${NOTES//$'\n'/'%0A'}"
-          NOTES="${NOTES//$'\r'/'%0D'}"
-          
-          echo "notes=$NOTES" >> $GITHUB_OUTPUT
+
+          # Write to file for multi-line output
+          echo "$NOTES" > release_notes.txt
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: release_notes.txt
 
   build-and-release:
     name: Build and Release
@@ -65,6 +65,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Download release notes
+        uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+
+      - name: Read release notes
+        id: read-notes
+        shell: pwsh
+        run: |
+          $notes = Get-Content -Path release_notes.txt -Raw
+          # Set output for use in tauri-action
+          "body<<EOF" >> $env:GITHUB_OUTPUT
+          $notes >> $env:GITHUB_OUTPUT
+          "EOF" >> $env:GITHUB_OUTPUT
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
@@ -99,7 +114,7 @@ jobs:
         with:
           tagName: v${{ needs.extract-changelog.outputs.version }}
           releaseName: 'WinAutoShutdown v${{ needs.extract-changelog.outputs.version }}'
-          releaseBody: '${{ needs.extract-changelog.outputs.release_notes }}'
+          releaseBody: ${{ steps.read-notes.outputs.body }}
           releaseDraft: true
           prerelease: false
           args: '--target x86_64-pc-windows-msvc'
@@ -120,15 +135,15 @@ jobs:
         run: |
           VERSION="${{ needs.extract-changelog.outputs.version }}"
           DATE=$(date +%Y-%m-%d)
-          
+
           # Add new empty Unreleased section after the header
-          sed -i "/^## \[Unreleased\]/a\\\n## [$VERSION] - $DATE" CHANGELOG.md
-          
+          sed -i "/^## \\[Unreleased\\]/a\\\n## [$VERSION] - $DATE" CHANGELOG.md
+
           # Clear Unreleased section content (keep only the header)
-          sed -i '/^## \[Unreleased\]/,/^## \[/{/^## \[Unreleased\]/!{/^## \[/!d}}' CHANGELOG.md
-          
+          sed -i '/^## \\[Unreleased\\]/,/^## \\[/{/^## \\[Unreleased\\]/!{/^## \\[/!d}}' CHANGELOG.md
+
           # Add empty line after Unreleased header
-          sed -i 's/^## \[Unreleased\]$/## [Unreleased]\n/' CHANGELOG.md
+          sed -i 's/^## \\[Unreleased\\]$/## [Unreleased]\n/' CHANGELOG.md
 
       - name: Commit changes
         run: |
