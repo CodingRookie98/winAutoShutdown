@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-02-07
+
+### Added
+- **Settings Page**: Dedicated settings view with persistent configuration.
+- **SPA Routing**: Implemented `vue-router` for seamless navigation between Home and Settings.
+- **Hibernate Support**: Added support for Windows Hibernate power state.
+- **Author Info**: Updated author details with GitHub profile link.
+
+### Changed
+- **UI Refactoring**: 
+  - Extracted Home logic to `HomeView`.
+  - Moved Settings logic (Theme, Language) to `SettingsView`.
+  - Replaced modal-based About section with a dedicated page.
+  - Improved header navigation with dynamic Settings/Back buttons.
+- **State Management**: Migrated manual `localStorage` logic to Pinia store (`useSettingsStore`) with auto-persistence.
+- **Dependencies**: Added `vue-router`.
+
 ## [1.2.0] - 2026-02-07
 
 ### Added
