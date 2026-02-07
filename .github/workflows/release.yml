@@ -1,0 +1,136 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.2.0)'
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  extract-changelog:
+    name: Extract Changelog
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+      release_notes: ${{ steps.extract.outputs.notes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version
+        id: get-version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Extract release notes from CHANGELOG
+        id: extract
+        run: |
+          VERSION="${{ steps.get-version.outputs.version }}"
+          
+          # Extract content between ## [VERSION] and next ## [ or end of file
+          NOTES=$(awk "/^## \\[$VERSION\\]/ {flag=1; next} /^## \\[/ {flag=0} flag" CHANGELOG.md)
+          
+          if [ -z "$NOTES" ]; then
+            echo "Warning: No release notes found for version $VERSION in CHANGELOG.md"
+            NOTES="Release $VERSION"
+          fi
+          
+          # Escape special characters for GitHub Actions
+          NOTES="${NOTES//'%'/'%25'}"
+          NOTES="${NOTES//$'\n'/'%0A'}"
+          NOTES="${NOTES//$'\r'/'%0D'}"
+          
+          echo "notes=$NOTES" >> $GITHUB_OUTPUT
+
+  build-and-release:
+    name: Build and Release
+    needs: extract-changelog
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Setup Rust
+        uses: dtolnay/rust-action@stable
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: v${{ needs.extract-changelog.outputs.version }}
+          releaseName: 'WinAutoShutdown v${{ needs.extract-changelog.outputs.version }}'
+          releaseBody: '${{ needs.extract-changelog.outputs.release_notes }}'
+          releaseDraft: true
+          prerelease: false
+          args: '--target x86_64-pc-windows-msvc'
+
+  update-unreleased:
+    name: Update Unreleased Section
+    needs: [extract-changelog, build-and-release]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add new Unreleased section
+        run: |
+          VERSION="${{ needs.extract-changelog.outputs.version }}"
+          DATE=$(date +%Y-%m-%d)
+          
+          # Add new empty Unreleased section after the header
+          sed -i "/^## \[Unreleased\]/a\\\n## [$VERSION] - $DATE" CHANGELOG.md
+          
+          # Clear Unreleased section content (keep only the header)
+          sed -i '/^## \[Unreleased\]/,/^## \[/{/^## \[Unreleased\]/!{/^## \[/!d}}' CHANGELOG.md
+          
+          # Add empty line after Unreleased header
+          sed -i 's/^## \[Unreleased\]$/## [Unreleased]\n/' CHANGELOG.md
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add CHANGELOG.md
+          git diff --staged --quiet || git commit -m "docs: update CHANGELOG.md after v${{ needs.extract-changelog.outputs.version }} release"
+          git push
