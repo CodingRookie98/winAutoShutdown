@@ -1,0 +1,58 @@
+{
+  "app": {
+    "name": "WinAutoShutdown",
+    "title": "WinAutoShutdown"
+  },
+  "common": {
+    "cancel": "取消",
+    "close": "关闭",
+    "save": "保存",
+    "delete": "删除",
+    "confirm": "确认",
+    "back": "返回"
+  },
+  "theme": {
+    "light": "浅色模式",
+    "dark": "深色模式",
+    "switchToLight": "切换到浅色模式",
+    "switchToDark": "切换到深色模式"
+  },
+  "actions": {
+    "shutdown": "关机",
+    "reboot": "重启",
+    "sleep": "睡眠",
+    "lock": "锁定"
+  },
+  "taskForm": {
+    "action": "操作",
+    "countdown": "倒计时",
+    "specificTime": "指定时间",
+    "days": "天",
+    "hours": "时",
+    "minutes": "分",
+    "seconds": "秒",
+    "targetTime": "目标时间",
+    "startTimer": "开始计时",
+    "error": {
+      "futureTime": "目标时间必须是未来时间"
+    }
+  },
+  "taskList": {
+    "title": "计划任务",
+    "empty": "暂无活动计时器",
+    "cancelTask": "取消任务",
+    "remaining": "剩余时间"
+  },
+  "about": {
+    "title": "关于",
+    "description": "一款现代化的 Windows 系统电源操作计划工具，轻量且高效。基于 Tauri、Rust 和 Vue 3 构建。",
+    "github": "GitHub 仓库",
+    "author": "作者",
+    "copyright": "© {year} WinAutoShutdown 团队"
+  },
+  "language": {
+    "title": "语言",
+    "en": "English",
+    "zhCN": "简体中文"
+  }
+}

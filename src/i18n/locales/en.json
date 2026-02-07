@@ -1,0 +1,58 @@
+{
+  "app": {
+    "name": "WinAutoShutdown",
+    "title": "WinAutoShutdown"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "switchToLight": "Switch to Light Mode",
+    "switchToDark": "Switch to Dark Mode"
+  },
+  "actions": {
+    "shutdown": "Shutdown",
+    "reboot": "Reboot",
+    "sleep": "Sleep",
+    "lock": "Lock"
+  },
+  "taskForm": {
+    "action": "Action",
+    "countdown": "Countdown",
+    "specificTime": "Specific Time",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs",
+    "targetTime": "Target Time",
+    "startTimer": "Start Timer",
+    "error": {
+      "futureTime": "Target time must be in the future"
+    }
+  },
+  "taskList": {
+    "title": "Scheduled Tasks",
+    "empty": "No active timers",
+    "cancelTask": "Cancel Task",
+    "remaining": "Remaining"
+  },
+  "about": {
+    "title": "About",
+    "description": "A modern, lightweight utility for scheduling system power actions on Windows. Built with Tauri, Rust, and Vue 3.",
+    "github": "GitHub Repository",
+    "author": "Author",
+    "copyright": "© {year} WinAutoShutdown Team"
+  },
+  "language": {
+    "title": "Language",
+    "en": "English",
+    "zhCN": "简体中文"
+  }
+}

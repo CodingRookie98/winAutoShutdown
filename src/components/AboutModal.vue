@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { openUrl } from '@tauri-apps/plugin-opener';
+
+const { t } = useI18n()
 
 defineProps<{
   isOpen: boolean
@@ -22,7 +25,7 @@ async function openLink(url: string) {
   <div v-if="isOpen" class="modal-overlay" @click="$emit('close')">
     <div class="modal-content" @click.stop>
       <div class="modal-header">
-        <h2>About</h2>
+        <h2>{{ t('about.title') }}</h2>
         <button class="close-btn" @click="$emit('close')">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -35,23 +38,22 @@ async function openLink(url: string) {
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="app-logo">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
           </svg>
-          <h3>WinAutoShutdown</h3>
+          <h3>{{ t('app.name') }}</h3>
           <span class="version">v1.2.0</span>
         </div>
         
         <p class="description">
-          A modern, lightweight utility for scheduling system power actions on Windows.
-          Built with Tauri, Rust, and Vue 3.
+          {{ t('about.description') }}
         </p>
         
         <div class="links">
-          <a href="#" @click.prevent="openLink('https://github.com/CodingRookie98/winAutoShutdown')">GitHub Repository</a>
+          <a href="#" @click.prevent="openLink('https://github.com/CodingRookie98/winAutoShutdown')">{{ t('about.github') }}</a>
           <span class="separator">|</span>
-          <a href="#" @click.prevent="openLink('https://github.com/CodingRookie98')">Author</a>
+          <a href="#" @click.prevent="openLink('https://github.com/CodingRookie98')">{{ t('about.author') }}</a>
         </div>
         
         <div class="footer">
-          &copy; {{ new Date().getFullYear() }} WinAutoShutdown Team
+          {{ t('about.copyright', { year: new Date().getFullYear() }) }}
         </div>
       </div>
     </div>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useTaskStore } from '../stores/taskStore'
 import type { SystemAction } from '../types'
 
 const store = useTaskStore()
+const { t } = useI18n()
 const action = ref<SystemAction>('shutdown')
 const mode = ref<'countdown' | 'specific'>('countdown')
 
@@ -43,7 +45,7 @@ async function handleSubmit() {
     if (!specificTime.value) return;
     const target = new Date(specificTime.value).getTime();
     if (target <= Date.now()) {
-        alert("Target time must be in the future");
+        alert(t('taskForm.error.futureTime'));
         return;
     }
     
@@ -58,13 +60,13 @@ async function handleSubmit() {
 <template>
   <form @submit.prevent="handleSubmit" class="task-form">
     <div class="form-group">
-        <label>Action</label>
+        <label>{{ t('taskForm.action') }}</label>
         <div class="select-wrapper">
           <select v-model="action">
-            <option value="shutdown">Shutdown</option>
-            <option value="reboot">Reboot</option>
-            <option value="sleep">Sleep</option>
-            <option value="lock">Lock</option>
+            <option value="shutdown">{{ t('actions.shutdown') }}</option>
+            <option value="reboot">{{ t('actions.reboot') }}</option>
+            <option value="sleep">{{ t('actions.sleep') }}</option>
+            <option value="lock">{{ t('actions.lock') }}</option>
           </select>
           <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
@@ -73,32 +75,32 @@ async function handleSubmit() {
     </div>
 
     <div class="tabs">
-        <button type="button" :class="{ active: mode === 'countdown' }" @click="mode = 'countdown'">Countdown</button>
-        <button type="button" :class="{ active: mode === 'specific' }" @click="mode = 'specific'">Specific Time</button>
+        <button type="button" :class="{ active: mode === 'countdown' }" @click="mode = 'countdown'">{{ t('taskForm.countdown') }}</button>
+        <button type="button" :class="{ active: mode === 'specific' }" @click="mode = 'specific'">{{ t('taskForm.specificTime') }}</button>
     </div>
 
     <div v-if="mode === 'countdown'" class="countdown-inputs">
         <div class="time-field">
-            <label>Days</label>
+            <label>{{ t('taskForm.days') }}</label>
             <input type="number" v-model="days" min="0" placeholder="0" />
         </div>
         <div class="time-field">
-            <label>Hours</label>
+            <label>{{ t('taskForm.hours') }}</label>
             <input type="number" v-model="hours" min="0" max="23" placeholder="0" />
         </div>
         <div class="time-field">
-            <label>Mins</label>
+            <label>{{ t('taskForm.minutes') }}</label>
             <input type="number" v-model="minutes" min="0" max="59" placeholder="0" />
         </div>
         <div class="time-field">
-            <label>Secs</label>
+            <label>{{ t('taskForm.seconds') }}</label>
             <input type="number" v-model="seconds" min="0" max="59" placeholder="0" />
         </div>
     </div>
 
     <div v-else class="specific-input">
         <div class="form-group">
-            <label>Target Time</label>
+            <label>{{ t('taskForm.targetTime') }}</label>
             <input type="datetime-local" v-model="specificTime" required />
         </div>
     </div>
@@ -107,7 +109,7 @@ async function handleSubmit() {
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="btn-icon">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      Start Timer
+      {{ t('taskForm.startTimer') }}
     </button>
   </form>
 </template>

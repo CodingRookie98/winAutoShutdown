@@ -4,22 +4,33 @@ import TaskList from "./components/TaskList.vue";
 import AboutModal from "./components/AboutModal.vue";
 import { onMounted, ref } from "vue";
 import { useTheme } from "./composables/useTheme";
+import { useI18n } from 'vue-i18n'
+import { availableLocales, type Locale } from './i18n'
 
 const { isDark, toggleTheme, initTheme } = useTheme();
+const { t, locale } = useI18n()
 const showAbout = ref(false);
 
 onMounted(() => {
   initTheme();
 });
+
+function toggleLanguage() {
+  const newLocale: Locale = locale.value === 'en' ? 'zh-CN' : 'en'
+  locale.value = newLocale
+}
 </script>
 
 <template>
   <main class="container">
     <div class="card">
       <div class="header-row">
-        <h1>WinAutoShutdown</h1>
+        <h1>{{ t('app.title') }}</h1>
         <div class="actions">
-          <button class="icon-btn" @click="toggleTheme" :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+          <button class="icon-btn" @click="toggleLanguage" :title="t('language.title')">
+            <span class="lang-indicator">{{ locale === 'en' ? 'EN' : '中' }}</span>
+          </button>
+          <button class="icon-btn" @click="toggleTheme" :title="isDark ? t('theme.switchToLight') : t('theme.switchToDark')">
             <!-- Sun icon -->
             <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
@@ -29,7 +40,7 @@ onMounted(() => {
               <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
             </svg>
           </button>
-          <button class="icon-btn" @click="showAbout = true" title="About">
+          <button class="icon-btn" @click="showAbout = true" :title="t('about.title')">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
             </svg>
@@ -78,6 +89,8 @@ h1 {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  min-width: 2.25rem;
+  height: 2.25rem;
 }
 
 .icon-btn:hover {
@@ -88,6 +101,11 @@ h1 {
 .icon {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+.lang-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .divider {

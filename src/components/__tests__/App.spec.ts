@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
+import { createTestI18n } from '../../i18n/test-utils'
 import App from '../../App.vue'
 import TaskForm from '../../components/TaskForm.vue'
 import TaskList from '../../components/TaskList.vue'
@@ -37,9 +38,12 @@ describe('App.vue', () => {
 
     const wrapper = mount(App, {
       global: {
-        plugins: [createTestingPinia({
-          createSpy: vi.fn,
-        })],
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+          }),
+          createTestI18n()
+        ],
       },
     })
 

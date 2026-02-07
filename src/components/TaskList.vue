@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { useTaskStore } from '../stores/taskStore'
 import { storeToRefs } from 'pinia'
 
 const store = useTaskStore()
+const { t } = useI18n()
 const { tasks } = storeToRefs(store)
 
 function formatDuration(seconds: number) {
@@ -31,16 +33,26 @@ function getTaskIcon(action: string) {
             return 'M5.636 5.636a9 9 0 1012.728 0M12 3v9';
     }
 }
+
+function getActionLabel(action: string) {
+    switch (action) {
+        case 'shutdown': return t('actions.shutdown')
+        case 'reboot': return t('actions.reboot')
+        case 'sleep': return t('actions.sleep')
+        case 'lock': return t('actions.lock')
+        default: return action
+    }
+}
 </script>
 
 <template>
   <div class="task-list">
-    <h3>Scheduled Tasks</h3>
+    <h3>{{ t('taskList.title') }}</h3>
     <div v-if="tasks.length === 0" class="empty-state">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="empty-icon">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      <p>No active timers</p>
+      <p>{{ t('taskList.empty') }}</p>
     </div>
     <ul v-else class="list-container">
       <li v-for="task in tasks" :key="task.id" class="task-item">
@@ -51,11 +63,11 @@ function getTaskIcon(action: string) {
                 </svg>
             </div>
             <div class="task-details">
-                <span class="task-type">{{ task.action }}</span>
+                <span class="task-type">{{ getActionLabel(task.action) }}</span>
                 <span class="task-time">{{ formatDuration(task.remaining) }}</span>
             </div>
         </div>
-        <button @click="store.removeTask(task.id)" class="remove-btn" title="Cancel Task">
+        <button @click="store.removeTask(task.id)" class="remove-btn" :title="t('taskList.cancelTask')">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="btn-icon">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>

@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
+import { createTestI18n } from '../../i18n/test-utils'
 import { useTaskStore } from '../../stores/taskStore'
 import TaskForm from '../TaskForm.vue'
 
@@ -13,10 +14,13 @@ describe('TaskForm.vue', () => {
   it('adds a task in countdown mode', async () => {
     const wrapper = mount(TaskForm, {
       global: {
-        plugins: [createTestingPinia({
-          createSpy: vi.fn,
-          stubActions: false
-        })],
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+            stubActions: false
+          }),
+          createTestI18n()
+        ],
       },
     })
 
@@ -50,10 +54,13 @@ describe('TaskForm.vue', () => {
 
     const wrapper = mount(TaskForm, {
       global: {
-        plugins: [createTestingPinia({
-          createSpy: vi.fn,
-          stubActions: false
-        })],
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+            stubActions: false
+          }),
+          createTestI18n()
+        ],
       },
     })
 
