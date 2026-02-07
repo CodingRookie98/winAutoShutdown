@@ -14,8 +14,14 @@
   "theme": {
     "light": "Light Mode",
     "dark": "Dark Mode",
+    "auto": "Auto System",
     "switchToLight": "Switch to Light Mode",
     "switchToDark": "Switch to Dark Mode"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme"
   },
   "actions": {
     "shutdown": "Shutdown",

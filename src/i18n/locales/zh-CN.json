@@ -14,8 +14,14 @@
   "theme": {
     "light": "浅色模式",
     "dark": "深色模式",
+    "auto": "跟随系统",
     "switchToLight": "切换到浅色模式",
     "switchToDark": "切换到深色模式"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "theme": "主题"
   },
   "actions": {
     "shutdown": "关机",
