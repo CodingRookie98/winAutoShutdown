@@ -44,7 +44,7 @@
       
       <div class="info-row">
         <span class="label">{{ t('about.author') }}:</span>
-        <span class="value">WinAutoShutdown Team</span>
+        <a href="https://github.com/CodingRookie98" target="_blank" class="value link">CodingRookie98</a>
       </div>
       
       <div class="info-row">
@@ -154,6 +154,16 @@ const { t } = useI18n()
 .value {
   color: #111827; /* gray-900 */
   font-weight: 500;
+}
+
+.link {
+  color: #3b82f6; /* blue-500 */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 
 .github-link {

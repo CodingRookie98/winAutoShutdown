@@ -2,7 +2,7 @@
 name = "win_auto_shutdown"
 version = "1.2.0"
 description = "A lightweight, secure Windows power management automation tool."
-authors = ["you"]
+authors = ["CodingRookie98"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
