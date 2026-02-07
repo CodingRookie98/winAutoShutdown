@@ -1,8 +1,10 @@
-# WinAutoShutdown (Rust + Tauri + Vue)
+# WinAutoShutdown: 智能电源自动化管理工具
 
-> [English](./README.md) | **中文**
+> [English](../README.md) | **中文**
 
-一个现代化的 Windows 自动关机/任务计划工具，构建于 Rust 和 Tauri 之上，提供轻量、安全且美观的用户体验。
+**Windows 终极电源自动化工具。**
+
+一款现代化的 Windows 智能电源管理与任务调度工具，构建于 Rust 和 Tauri 之上，提供轻量、安全且美观的用户体验。
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.2.0-green.svg)
@@ -10,10 +12,10 @@
 ## ✨ 特性
 
 - 🚀 **高性能**: 基于 Rust 后端，资源占用极低。
-- 🎨 **现代化 UI**: 使用 Vue 3 构建，支持深色模式 (Dark Mode)。
-- 🛡️ **安全**: 需要管理员权限执行系统操作，操作透明。
-- ⏰ **多任务支持**: 支持定时关机、重启、睡眠、锁定等多种任务。
-- 🔄 **任务管理**: 可随时取消或查看待执行任务。
+- 🎨 **现代化 UI**: 使用 Vue 3 构建，支持深色模式 (Dark Mode) 与优雅动画。
+- 🛡️ **安全透明**: 原生 Windows API 集成，操作透明可控。
+- ⚡ **电源管理**: 支持定时关机、重启、睡眠、休眠、锁定等多种电源任务。
+- 🔄 **智能调度**: 灵活的任务管理系统，随时查看或取消计划。
 
 ## 🛠️ 技术栈
 

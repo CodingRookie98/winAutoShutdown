@@ -2,6 +2,7 @@
   "name": "win-auto-shutdown",
   "private": true,
   "version": "1.2.0",
+  "description": "The Ultimate Power Automation Tool for Windows - Built with Rust & Tauri",
   "type": "module",
   "scripts": {
     "dev": "vite",

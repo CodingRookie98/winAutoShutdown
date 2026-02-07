@@ -1,8 +1,10 @@
-# WinAutoShutdown (Rust + Tauri + Vue)
+# WinAutoShutdown: Intelligent Power Automation
 
 > **English** | [中文](./docs/README_zh-CN.md)
 
-A modern Windows auto-shutdown/task scheduling tool built on Rust and Tauri, providing a lightweight, secure, and beautiful user experience.
+**The Ultimate Power Automation Tool for Windows.**
+
+A modern, lightweight Windows power management utility. Schedule shutdowns, reboots, sleep modes, and more with a beautiful Vue+Rust interface.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.2.0-green.svg)
@@ -10,10 +12,10 @@ A modern Windows auto-shutdown/task scheduling tool built on Rust and Tauri, pro
 ## ✨ Features
 
 - 🚀 **High Performance**: Low resource usage powered by Rust backend.
-- 🎨 **Modern UI**: Built with Vue 3, supports Dark Mode.
-- 🛡️ **Secure**: Requires admin privileges for system operations, transparent execution.
-- ⏰ **Multi-task Support**: Supports Shutdown, Reboot, Sleep, Lock, and more.
-- 🔄 **Task Management**: View or cancel pending tasks at any time.
+- 🎨 **Modern UI**: Built with Vue 3, supports Dark Mode and elegant animations.
+- 🛡️ **Secure & Transparent**: Native Windows API integration with safety checks.
+- ⚡ **Power Management**: Automate Shutdown, Reboot, Sleep, Hibernate, and Lock.
+- 🔄 **Smart Scheduling**: Flexible timer and task management system.
 
 ## 🛠️ Tech Stack
 
