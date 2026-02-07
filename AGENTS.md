@@ -80,3 +80,26 @@ git push origin feature/my-feature
 
 ## 6. File Operations
 - **Renaming/Moving**: ALWAYS use `git mv` for renaming or moving files to preserve version history.
+
+## 7. Git Repository Protection (ABSOLUTE BAN)
+
+> ⛔ **CRITICAL RULE**: The `.git` directory is **ABSOLUTELY PROTECTED**. Deleting, modifying, or damaging the `.git` directory is **STRICTLY PROHIBITED** under any circumstances.
+
+### 🚫 Absolutely Prohibited Actions
+- **DO NOT** delete the `.git` directory (`rm -rf .git`, `Remove-Item -Recurse .git`, etc.).
+- **DO NOT** move or rename the `.git` directory.
+- **DO NOT** manually edit files inside the `.git` directory.
+- **DO NOT** run any commands that may corrupt or damage the `.git` directory.
+
+### 🚨 Consequences
+- **Data Loss**: Deleting `.git` will result in complete loss of version history.
+- **Work Disruption**: Repository will need to be re-cloned and re-configured.
+- **Critical Alert**: Any attempt to delete `.git` triggers immediate security alert.
+
+### ✅ Recovery (If Accidentally Deleted)
+If `.git` is accidentally deleted:
+1. **STOP** all operations immediately.
+2. **DO NOT** create new files or modify existing files.
+3. Run `git init` to reinitialize.
+4. Run `git remote add origin <repo-url>` to reconnect remote.
+5. Run `git fetch origin` and `git reset --hard origin/master` to restore.

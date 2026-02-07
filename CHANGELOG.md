@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 2026-02-07
 
-## [1.2.0] - 2026-02-07
-
 ### Added
 - Multi-language support (English and Simplified Chinese)
 - Language switcher in the header
@@ -18,25 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Moved README_zh-CN.md to docs directory
+- Refactored application using Rust + Tauri + Vue
 
 ### Removed
 - Deleted temp_init directory
 
-## [1.1.0] - 2026-01-15
-
-### Added
-- Dark mode support
-- Task management (view and cancel pending tasks)
-- About modal with app information
-
-### Fixed
-- Various UI improvements
-
-## [1.0.0] - 2026-01-01
-
-### Added
-- Initial release
-- Support for Shutdown, Reboot, Sleep, Lock actions
-- Countdown timer mode
-- Specific time scheduling mode
-- System tray integration
+**Full Changelog**: https://github.com/Gangster-new/winAutoShutdown/compare/v1.1.0...v1.2.0
