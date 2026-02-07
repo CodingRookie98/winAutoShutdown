@@ -5,7 +5,7 @@ import AboutModal from "./components/AboutModal.vue";
 import { onMounted, ref } from "vue";
 import { useTheme } from "./composables/useTheme";
 import { useI18n } from 'vue-i18n'
-import { availableLocales, type Locale } from './i18n'
+import { type Locale } from './i18n'
 
 const { isDark, toggleTheme, initTheme } = useTheme();
 const { t, locale } = useI18n()
@@ -47,7 +47,7 @@ function toggleLanguage() {
           </button>
         </div>
       </div>
-      
+
       <TaskForm />
       <div class="divider"></div>
       <TaskList />
