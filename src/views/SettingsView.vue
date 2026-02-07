@@ -49,7 +49,7 @@
       
       <div class="info-row">
         <span class="label">Version:</span>
-        <span class="value">1.2.0</span>
+        <span class="value">1.3.0</span>
       </div>
 
       <a href="https://github.com/CodingRookie98/winAutoShutdown" target="_blank" class="github-link">
