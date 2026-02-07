@@ -136,8 +136,13 @@ jobs:
           VERSION="${{ needs.extract-changelog.outputs.version }}"
           DATE=$(date +%Y-%m-%d)
 
-          # Add new version section after Unreleased header
-          sed -i "0,/^## \\[Unreleased\\]$/s//## [Unreleased]\n\n## [$VERSION] - $DATE/" CHANGELOG.md
+          # Check if version already exists to prevent duplication
+          if grep -q "## \[$VERSION\]" CHANGELOG.md; then
+            echo "Version $VERSION already exists in CHANGELOG.md. Skipping update."
+          else
+            # Add new version section after Unreleased header
+            sed -i "0,/^## \\[Unreleased\\]$/s//## [Unreleased]\n\n## [$VERSION] - $DATE/" CHANGELOG.md
+          fi
 
       - name: Commit changes
         run: |
