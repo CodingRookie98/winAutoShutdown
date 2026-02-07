@@ -113,6 +113,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: master
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add new Unreleased section
