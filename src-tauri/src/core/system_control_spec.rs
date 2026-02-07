@@ -8,6 +8,7 @@ mock! {
         fn shutdown(&self) -> Result<(), String>;
         fn reboot(&self) -> Result<(), String>;
         fn sleep(&self) -> Result<(), String>;
+        fn hibernate(&self) -> Result<(), String>;
         fn lock(&self) -> Result<(), String>;
     }
 }

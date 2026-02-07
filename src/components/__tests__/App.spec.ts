@@ -11,6 +11,17 @@ vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn()
 }))
 
+// Mock vue-router
+vi.mock('vue-router', () => ({
+    useRouter: () => ({
+        push: vi.fn(),
+        back: vi.fn()
+    }),
+    useRoute: () => ({
+        path: '/'
+    })
+}))
+
 describe('App.vue', () => {
   it('renders TaskForm and TaskList', async () => {
     // Mock localStorage and matchMedia
@@ -22,9 +33,9 @@ describe('App.vue', () => {
         key: vi.fn(),
         length: 0
     };
-    
+
     vi.stubGlobal('localStorage', localStorageMock);
-    
+
     vi.stubGlobal('matchMedia', vi.fn().mockImplementation(query => ({
         matches: false,
         media: query,
