@@ -66,6 +66,7 @@ async function handleSubmit() {
             <option value="shutdown">{{ t('actions.shutdown') }}</option>
             <option value="reboot">{{ t('actions.reboot') }}</option>
             <option value="sleep">{{ t('actions.sleep') }}</option>
+            <option value="hibernate">{{ t('actions.hibernate') }}</option>
             <option value="lock">{{ t('actions.lock') }}</option>
           </select>
           <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

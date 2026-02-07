@@ -16,6 +16,7 @@ enum SystemAction {
     Shutdown,
     Reboot,
     Sleep,
+    Hibernate,
     Lock,
 }
 
@@ -27,7 +28,7 @@ fn greet(name: &str) -> String {
 #[tauri::command]
 fn start_shutdown_timer(seconds: u64, state: State<'_, AppState>) {
     let timer = state.timer.clone();
-    
+
     timer.start(seconds, || {
         println!("Timer expired! Executing shutdown...");
         let system_control = WindowsSystemControl::new();
@@ -50,6 +51,7 @@ fn execute_system_action(action: SystemAction) -> Result<(), String> {
         SystemAction::Shutdown => system_control.shutdown(),
         SystemAction::Reboot => system_control.reboot(),
         SystemAction::Sleep => system_control.sleep(),
+        SystemAction::Hibernate => system_control.hibernate(),
         SystemAction::Lock => system_control.lock(),
     }
 }

@@ -1,4 +1,4 @@
-export type SystemAction = 'shutdown' | 'reboot' | 'sleep' | 'lock';
+export type SystemAction = 'shutdown' | 'reboot' | 'sleep' | 'hibernate' | 'lock';
 
 export interface Task {
   id: string;

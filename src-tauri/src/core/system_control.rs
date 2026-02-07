@@ -1,4 +1,6 @@
 #[cfg(target_os = "windows")]
+use windows::core::{Result as WindowsResult, PCWSTR};
+#[cfg(target_os = "windows")]
 use windows::Win32::Foundation::{HANDLE, LUID};
 #[cfg(target_os = "windows")]
 use windows::Win32::Security::{
@@ -13,14 +15,13 @@ use windows::Win32::System::Shutdown::{
 };
 #[cfg(target_os = "windows")]
 use windows::Win32::System::Threading::{GetCurrentProcess, OpenProcessToken};
-#[cfg(target_os = "windows")]
-use windows::core::{PCWSTR, Result as WindowsResult};
 
 // Trait definition
 pub trait SystemControl {
     fn shutdown(&self) -> Result<(), String>;
     fn reboot(&self) -> Result<(), String>;
     fn sleep(&self) -> Result<(), String>;
+    fn hibernate(&self) -> Result<(), String>;
     fn lock(&self) -> Result<(), String>;
 }
 
@@ -105,6 +106,19 @@ impl SystemControl for WindowsSystemControl {
         }
     }
 
+    fn hibernate(&self) -> Result<(), String> {
+        Self::enable_shutdown_privilege()
+            .map_err(|e| format!("Failed to enable privilege: {}", e))?;
+        unsafe {
+            let result = SetSuspendState(true, false, false);
+            if result {
+                Ok(())
+            } else {
+                Err("Failed to hibernate".to_string())
+            }
+        }
+    }
+
     fn lock(&self) -> Result<(), String> {
         unsafe { LockWorkStation().map_err(|e| e.to_string()) }
     }
@@ -119,6 +133,9 @@ impl SystemControl for WindowsSystemControl {
         Err("Not supported on non-Windows".into())
     }
     fn sleep(&self) -> Result<(), String> {
+        Err("Not supported on non-Windows".into())
+    }
+    fn hibernate(&self) -> Result<(), String> {
         Err("Not supported on non-Windows".into())
     }
     fn lock(&self) -> Result<(), String> {

@@ -21,6 +21,7 @@
     "shutdown": "Shutdown",
     "reboot": "Reboot",
     "sleep": "Sleep",
+    "hibernate": "Hibernate",
     "lock": "Lock"
   },
   "taskForm": {

@@ -15,9 +15,7 @@ mock! {
 #[test]
 fn test_mock_shutdown_call() {
     let mut mock = MockSystemControl::new();
-    mock.expect_shutdown()
-        .times(1)
-        .returning(|| Ok(()));
+    mock.expect_shutdown().times(1).returning(|| Ok(()));
 
     assert_eq!(mock.shutdown(), Ok(()));
 }
@@ -25,9 +23,7 @@ fn test_mock_shutdown_call() {
 #[test]
 fn test_mock_reboot_call() {
     let mut mock = MockSystemControl::new();
-    mock.expect_reboot()
-        .times(1)
-        .returning(|| Ok(()));
+    mock.expect_reboot().times(1).returning(|| Ok(()));
 
     assert_eq!(mock.reboot(), Ok(()));
 }
@@ -35,9 +31,7 @@ fn test_mock_reboot_call() {
 #[test]
 fn test_mock_sleep_call() {
     let mut mock = MockSystemControl::new();
-    mock.expect_sleep()
-        .times(1)
-        .returning(|| Ok(()));
+    mock.expect_sleep().times(1).returning(|| Ok(()));
 
     assert_eq!(mock.sleep(), Ok(()));
 }
@@ -45,9 +39,7 @@ fn test_mock_sleep_call() {
 #[test]
 fn test_mock_lock_call() {
     let mut mock = MockSystemControl::new();
-    mock.expect_lock()
-        .times(1)
-        .returning(|| Ok(()));
+    mock.expect_lock().times(1).returning(|| Ok(()));
 
     assert_eq!(mock.lock(), Ok(()));
 }
