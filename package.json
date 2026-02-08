@@ -3,6 +3,10 @@
   "private": true,
 "version": "1.3.0",
   "description": "The Ultimate Power Automation Tool for Windows - Built with Rust & Tauri",
+"engines": {
+    "node": ">=24",
+    "pnpm": ">=10"
+},
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -5,6 +5,7 @@ import { createTestI18n } from '../../i18n/test-utils'
 import App from '../../App.vue'
 import TaskForm from '../../components/TaskForm.vue'
 import TaskList from '../../components/TaskList.vue'
+import HomeView from '../../views/HomeView.vue'
 
 // Mock Tauri API
 vi.mock('@tauri-apps/api/core', () => ({
@@ -47,8 +48,21 @@ describe('App.vue', () => {
         dispatchEvent: vi.fn(),
     })));
 
+      // Stub RouterView to provide HomeView as the component
+      const RouterViewStub = {
+          template: '<div><slot :Component="Component" /></div>',
+          setup() {
+              return {
+                  Component: HomeView
+              }
+          }
+      }
+
     const wrapper = mount(App, {
       global: {
+            stubs: {
+                RouterView: RouterViewStub
+            },
         plugins: [
           createTestingPinia({
             createSpy: vi.fn,
