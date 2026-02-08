@@ -103,3 +103,20 @@ If `.git` is accidentally deleted:
 3. Run `git init` to reinitialize.
 4. Run `git remote add origin <repo-url>` to reconnect remote.
 5. Run `git fetch origin` and `git reset --hard origin/master` to restore.
+
+## 8. Versioning
+When updating the project version (e.g., `v1.2.0` -> `v1.3.0`), you **MUST** update the following files:
+
+1.  **`package.json`**:
+    -   Update the `"version"` field.
+2.  **`src-tauri/Cargo.toml`**:
+    -   Update the `version` field under `[package]`.
+3.  **`src-tauri/tauri.conf.json`**:
+    -   Update the `version` field (Note: Use `major.minor.patch` format).
+    -   Ensure this matches the other files to avoid build artifact mismatches.
+
+### Recommended Checklist
+- [ ] Update `package.json`
+- [ ] Update `src-tauri/Cargo.toml`
+- [ ] Update `src-tauri/tauri.conf.json`
+- [ ] Run `pnpm tauri build` to verify artifacts.
