@@ -27,4 +27,4 @@ dist-ssr
 /.agents/
 /.trae/
 /.vscode/
-/build/
+/build/.worktrees/
